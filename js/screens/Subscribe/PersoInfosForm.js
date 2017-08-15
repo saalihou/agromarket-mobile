@@ -5,6 +5,8 @@ import set from 'lodash/set';
 
 import Card from '~components/Card';
 
+import colors from '~theme/colors';
+
 export default class PersoInfosForm extends Component {
   state = {
     values: {}
@@ -45,7 +47,7 @@ export default class PersoInfosForm extends Component {
         />
         <Button
           title="Suivant"
-          color="tomato"
+          color={colors.PRIMARY}
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />

@@ -5,6 +5,8 @@ import set from 'lodash/set';
 
 import Card from '~components/Card';
 
+import colors from '~theme/colors';
+
 export default class AddressForm extends Component {
   state = {
     values: {}
@@ -43,7 +45,7 @@ export default class AddressForm extends Component {
         />
         <Button
           title="Terminer"
-          color="tomato"
+          color={colors.PRIMARY}
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />

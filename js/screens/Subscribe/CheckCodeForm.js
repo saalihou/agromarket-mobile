@@ -4,6 +4,8 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
 import Card from '~components/Card';
 
+import colors from '~theme/colors';
+
 export default class CheckCodeForm extends Component {
   state = {
     values: {}
@@ -30,7 +32,7 @@ export default class CheckCodeForm extends Component {
         />
         <Button
           title="Vérifier"
-          color="tomato"
+          color={colors.PRIMARY}
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />

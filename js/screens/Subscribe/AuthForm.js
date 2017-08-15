@@ -4,6 +4,8 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
 import Card from '~components/Card';
 
+import colors from '~theme/colors';
+
 export default class AuthForm extends Component {
   state = {
     values: {}
@@ -41,7 +43,7 @@ export default class AuthForm extends Component {
         />
         <Button
           title="Suivant"
-          color="tomato"
+          color={colors.PRIMARY}
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />

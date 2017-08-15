@@ -1,35 +1,53 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, Image, Button } from 'react-native';
+import { Text, View, ActivityIndicator, TextInput, Image, Button } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
 import Card from '~components/Card';
 
-export default class AuthForm extends Component {
-    handleNext() {
-        this.props.onSubmit({});
-    }
+import colors from '~theme/colors';
 
-	render() {
-		return (
-			<Card title="Informations d'authentification">
-                <TextInput
-                    keyboardType='phone-pad'
-                    placeholder="Numéro de téléphone principal"
-                />
-                <TextInput
-                    secureTextEntry={true}
-                    placeholder="Mot de passe"
-                />
-                <TextInput
-                    secureTextEntry={true}
-                    placeholder="Confirmation du mot de passe"
-                />
-                <Button 
-                    title="Suivant"
-                    color="tomato"
-                    onPress={this.handleNext.bind(this)}
-                />
-            </Card>
-		);
-	}
+export default class AuthForm extends Component {
+  state = {
+    values: {}
+  };
+
+  handleNext() {
+    this.props.onSubmit(this.state.values);
+  }
+
+  makeChangeHandler(key) {
+    return val => {
+      const { values } = this.state;
+      values[key] = val;
+      this.setState({ values });
+    };
+  }
+
+  render() {
+    return (
+      <Card title="Informations d'authentification">
+        <TextInput
+          keyboardType="phone-pad"
+          placeholder="Numéro de téléphone principal"
+          onChangeText={this.makeChangeHandler('phoneNumber')}
+        />
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Mot de passe"
+          onChangeText={this.makeChangeHandler('password')}
+        />
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Confirmation du mot de passe"
+          onChangeText={this.makeChangeHandler('passwordConfirmation')}
+        />
+        <Button
+          title="Suivant"
+          color={colors.PRIMARY}
+          onPress={this.handleNext.bind(this)}
+          disabled={this.props.loading}
+        />
+      </Card>
+    );
+  }
 }

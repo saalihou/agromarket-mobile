@@ -28,14 +28,14 @@ const styles = {
         padding: 20,
         height: 350,
         width: 300,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         justifyContent: 'center',
         flexDirection: 'column',
     },
     header: {
         width: 300,
         height: 50,
-        backgroundColor: 'tomato', 
+        // backgroundColor: 'tomato', 
         justifyContent: 'center',
         alignItems: 'center',
     }

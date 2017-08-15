@@ -17,7 +17,7 @@ class AuthStore {
     try {
       this.loading = true;
       const response = await api.post('/AGMUsers', {
-        phoneNumber: `+221${phoneNumber}`,
+        phoneNumber: `221${phoneNumber}`,
         password
       });
       if (!response.ok) {

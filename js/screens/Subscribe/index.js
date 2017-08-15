@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import { observer } from 'mobx-react';
+import validate from 'validate.js';
 
 import AuthForm from './AuthForm.js';
 import PersoInfosForm from './PersoInfosForm.js';
@@ -17,14 +18,31 @@ import AddressForm from './AddressForm.js';
 
 import authStore from '~stores/auth';
 
+import authValidator from './validations/auth';
+import codeValidator from './validations/code';
+import persoInfosValidator from './validations/persoInfos';
+import addressValidator from './validations/address';
+
 @observer
 export default class SubscribeScreen extends Component {
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
   }
 
+  validate(values, validator) {
+    const errors = validate(values, validator, {
+      format: 'flat'
+    });
+    if (errors) {
+      Alert.alert(`Erreur`, errors[0]);
+      return false;
+    }
+    return true;
+  }
+
   async onAuthSubmit(authInfos) {
     try {
+      if (!this.validate(authInfos, authValidator)) return;
       if (authInfos.password !== authInfos.passwordConfirmation) {
         Alert.alert(`Erreur`, `Mot de passe différent de la confirmation`);
         return;
@@ -38,6 +56,7 @@ export default class SubscribeScreen extends Component {
 
   async onCheckCodeSubmit({ code }) {
     try {
+      if (!this.validate({code}, codeValidator)) return;
       const { verified } = await authStore.verifyPhone(code);
       if (!verified) {
         Alert.alert(`Erreur`, `Code invalide`);
@@ -51,6 +70,7 @@ export default class SubscribeScreen extends Component {
 
   async onPersoInfoSubmit(personalInfos) {
     try {
+      if (!this.validate(personalInfos, persoInfosValidator)) return;
       await authStore.updatePendingProfile(personalInfos);
       this.gotoPage(3);
     } catch (e) {
@@ -60,6 +80,7 @@ export default class SubscribeScreen extends Component {
 
   async onAddressSubmit(address) {
     try {
+      if (!this.validate(address, addressValidator)) return;
       await authStore.updatePendingProfile({ address });
       Alert.alert(`Félicitations`, `Bienvenue à bord!`);
     } catch (e) {

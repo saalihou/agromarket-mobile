@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Text, View, Image, BackAndroid, StyleSheet } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
-import AuthSubscribe from './AuthSubscribe.js';
-import PersoInfosSubscribe from './PersoInfosSubscribe.js';
+import AuthForm from './AuthForm.js';
+import PersoInfosForm from './PersoInfosForm.js';
+import CheckCodeForm from './CheckCodeForm.js';
+import AddressForm from './AddressForm.js';
 
-export default class SubscribePage extends Component {
+export default class SubscribeScreen extends Component {
 	gotoPage(page) {
 		this.refs.viewPager.setPage(page);
 	}
@@ -14,11 +16,23 @@ export default class SubscribePage extends Component {
 		this.gotoPage(1);
 	}
 
+	onCheckCodeSubmit(authInfos) {
+		this.gotoPage(2);
+	}
+
+	onPersoInfoSubmit(authInfos) {
+		this.gotoPage(3);
+	}
+
+	onAddressSubmit(authInfos) {
+		this.gotoPage(3);
+	}
+
 	render() {
 		return (
 			<View style={{flex:1}}>
                 <Image
-                    source={require('../../assets/images/cocktails.png')}
+                    source={require('~assets/images/cocktails.png')}
                     style={styles.backgroundImage}
                 />
 				<IndicatorViewPager
@@ -27,13 +41,16 @@ export default class SubscribePage extends Component {
 					ref='viewPager'
 				>
 					<View>
-						<AuthSubscribe onSubmit={this.onAuthSubmit.bind(this)} />
+						<AuthForm onSubmit={this.onAuthSubmit.bind(this)} />
 					</View>
 					<View>
-						<PersoInfosSubscribe />
+						<CheckCodeForm onSubmit={this.onCheckCodeSubmit.bind(this)} />
 					</View>
-					<View style={{backgroundColor:'#1AA094'}}>
-						<Text>Page Three</Text>
+					<View>
+						<PersoInfosForm onSubmit={this.onPersoInfoSubmit.bind(this)} />
+					</View>
+					<View>
+						<AddressForm onSubmit={this.onAddressSubmit.bind(this)} />
 					</View>
 				</IndicatorViewPager>
 			</View>

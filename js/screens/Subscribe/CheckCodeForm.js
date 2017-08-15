@@ -5,24 +5,36 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import Card from '~components/Card';
 
 export default class CheckCodeForm extends Component {
+  state = {
+    values: {}
+  };
 
-    handleNext() {
-        this.props.onSubmit({});
-    }
+  handleNext() {
+    this.props.onSubmit(this.state.values);
+  }
 
-	render() {
-		return (
-            <Card title="Vérification">
-                <TextInput
-                    keyboardType='phone-pad'
-                    placeholder="Code de vérification"
-                />
-                <Button 
-                    title="Vérifier"
-                    color="tomato"
-                    onPress={this.handleNext.bind(this)}
-                />
-            </Card>
-		);
-	}
+  makeChangeHandler(key) {
+    return val => {
+      const { values } = this.state;
+      values[key] = val;
+      this.setState({ values });
+    };
+  }
+
+  render() {
+    return (
+      <Card title="Vérification">
+        <TextInput
+          placeholder="Code de vérification"
+          onChangeText={this.makeChangeHandler('code')}
+        />
+        <Button
+          title="Vérifier"
+          color="tomato"
+          onPress={this.handleNext.bind(this)}
+          disabled={this.props.loading}
+        />
+      </Card>
+    );
+  }
 }

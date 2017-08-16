@@ -106,7 +106,7 @@ export default class HomeScreen extends Component {
       passProps: { product },
       sharedElements: [`productImage${product.id}`]
     });
-    setTimeout(() => this.setState({ visible: false }), 500)
+    setTimeout(() => this.setState({ visible: false }), 350)
   }
 
   render() {

@@ -4,7 +4,7 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import set from 'lodash/set';
 
 import Card from '~components/Card';
-
+import CustomTextInput from '~components/CustomTextInput.js'
 import colors from '~theme/colors';
 
 export default class PersoInfosForm extends Component {
@@ -26,21 +26,25 @@ export default class PersoInfosForm extends Component {
 
   render() {
     return (
-      <Card title="Informations Personnelles">
-        <TextInput
+      <View>
+        <CustomTextInput
+          icon="person"
           placeholder="Nom"
           onChangeText={this.makeChangeHandler('lastName')}
         />
-        <TextInput
+        <CustomTextInput
+        icon="person"
           placeholder="Prénom(s)"
           onChangeText={this.makeChangeHandler('firstName')}
         />
-        <TextInput
+        <CustomTextInput
+          icon="phone-android"
           keyboardType="phone-pad"
           placeholder="Autre numéro 1"
           onChangeText={this.makeChangeHandler('phoneNumbers[0]')}
         />
-        <TextInput
+        <CustomTextInput
+          icon="phone-iphone"
           keyboardType="phone-pad"
           placeholder="Autre numéro 2"
           onChangeText={this.makeChangeHandler('phoneNumbers[1]')}
@@ -51,7 +55,7 @@ export default class PersoInfosForm extends Component {
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />
-      </Card>
+      </View>
     );
   }
 }

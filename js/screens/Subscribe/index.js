@@ -17,8 +17,14 @@ import AddressForm from './AddressForm.js';
 
 import authStore from '~stores/auth';
 
+import Card from '~components/Card';
+
 @observer
 export default class SubscribeScreen extends Component {
+  state = {
+    activePage: 0
+  };
+
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
   }
@@ -67,43 +73,55 @@ export default class SubscribeScreen extends Component {
     }
   }
 
+  onPageSelected({position}) {
+    this.setState({ activePage: position })
+  }
+
   render() {
+    const { activePage } = this.state;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingLeft: 20, paddingRight: 20, paddingTop: 50, paddingBottom: 50 }}>
         <Image
-          source={require('~assets/images/cocktails.png')}
+          source={require('~assets/images/fruits.png')}
           style={styles.backgroundImage}
         />
-        <IndicatorViewPager
-          style={styles.viewPager}
-          scrollEnabled={false}
-          ref="viewPager"
-        >
-          <View>
-            <AuthForm
-              onSubmit={this.onAuthSubmit.bind(this)}
-              loading={authStore.loading}
-            />
-          </View>
-          <View>
-            <CheckCodeForm
-              onSubmit={this.onCheckCodeSubmit.bind(this)}
-              loading={authStore.loading}
-            />
-          </View>
-          <View>
-            <PersoInfosForm
-              onSubmit={this.onPersoInfoSubmit.bind(this)}
-              loading={authStore.loading}
-            />
-          </View>
-          <View>
-            <AddressForm
-              onSubmit={this.onAddressSubmit.bind(this)}
-              loading={authStore.loading}
-            />
-          </View>
-        </IndicatorViewPager>
+        <Card animation={require('~assets/animations/pink_drink_machine.json')}>
+          <IndicatorViewPager
+            style={styles.viewPager}
+            scrollEnabled={true}
+            onPageSelected={this.onPageSelected.bind(this)}
+            ref="viewPager"
+          >
+            <View>
+              <AuthForm
+                onSubmit={this.onAuthSubmit.bind(this)}
+                loading={authStore.loading}
+                active={activePage === 0}
+              />
+            </View>
+            <View>
+              <CheckCodeForm
+                onSubmit={this.onCheckCodeSubmit.bind(this)}
+                loading={authStore.loading}
+                active={activePage === 1}
+              />
+            </View>
+            <View>
+              <PersoInfosForm
+                onSubmit={this.onPersoInfoSubmit.bind(this)}
+                loading={authStore.loading}
+                active={activePage === 2}
+              />
+            </View>
+            <View>
+              <AddressForm
+                onSubmit={this.onAddressSubmit.bind(this)}
+                loading={authStore.loading}
+                active={activePage === 3}
+              />
+            </View>
+          </IndicatorViewPager>
+        </Card>
       </View>
     );
   }

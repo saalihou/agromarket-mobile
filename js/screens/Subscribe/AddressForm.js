@@ -4,6 +4,7 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import set from 'lodash/set';
 
 import Card from '~components/Card';
+import CustomTextInput from '~components/CustomTextInput.js';
 
 import colors from '~theme/colors';
 
@@ -26,20 +27,24 @@ export default class AddressForm extends Component {
 
   render() {
     return (
-      <Card title="Adresse">
-        <TextInput
+      <View>
+        <CustomTextInput
           placeholder="Région"
+          icon="place"
           onChangeText={this.makeChangeHandler('region')}
         />
-        <TextInput
+        <CustomTextInput
+          icon="near-me"
           placeholder="Département"
           onChangeText={this.makeChangeHandler('department')}
         />
-        <TextInput
+        <CustomTextInput
+          icon="navigation"
           placeholder="Quartier"
           onChangeText={this.makeChangeHandler('district')}
         />
-        <TextInput
+        <CustomTextInput
+          icon="person-pin"
           placeholder="Détails de localisation"
           onChangeText={this.makeChangeHandler('details')}
         />
@@ -49,7 +54,7 @@ export default class AddressForm extends Component {
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />
-      </Card>
+      </View>
     );
   }
 }

@@ -3,7 +3,7 @@ import { Text, View, TextInput, Image, Button } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
 import Card from '~components/Card';
-
+import CustomTextInput from '~components/CustomTextInput.js'
 import colors from '~theme/colors';
 
 export default class CheckCodeForm extends Component {
@@ -25,8 +25,9 @@ export default class CheckCodeForm extends Component {
 
   render() {
     return (
-      <Card title="Vérification">
-        <TextInput
+      <View>
+        <CustomTextInput
+          icon="lock-open"
           placeholder="Code de vérification"
           onChangeText={this.makeChangeHandler('code')}
         />
@@ -36,7 +37,7 @@ export default class CheckCodeForm extends Component {
           onPress={this.handleNext.bind(this)}
           disabled={this.props.loading}
         />
-      </Card>
+      </View>
     );
   }
 }

@@ -137,9 +137,9 @@ export default class HomeScreen extends Component {
       <PagerTitleIndicator
         style={styles.indicatorContainer}
         titles={[
-          <Icon color="green" name="home" size={30} />,
-          <Icon color="green" name="id-card" size={30} />,
-          <Icon color="green" name="user" size={30} />
+          <MaterialIcon color="green" name="home" size={30} />,
+          <MaterialIcon color="green" name="list" size={30} />,
+          <MaterialIcon color="green" name="person" size={30} />
         ]}
       />
     );

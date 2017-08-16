@@ -6,7 +6,7 @@ import ProductList from '~screens/Home/components/ProductList.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-import colors from '~theme/colors'
+import colors from '~theme/colors';
 
 const placeholdText =
   'Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit';
@@ -48,11 +48,14 @@ const list = [
 
 export default class HomeScreen extends Component {
   static navigatorStyle = {
-    navBarTitleTextCentered: true,
+    navBarTitleTextCentered: true
   };
 
-  static navigatorButtons = {
-  }
+  static navigatorButtons = {};
+
+  state = {
+    visible: true
+  };
 
   displayFab(icon, id) {
     MaterialIcon.getImageSource(icon, 30, 'white').then(source => {
@@ -62,8 +65,8 @@ export default class HomeScreen extends Component {
           collapsedIcon: source,
           backgroundColor: colors.ACCENT
         }
-      })
-    })
+      });
+    });
   }
 
   removeFab() {
@@ -75,11 +78,18 @@ export default class HomeScreen extends Component {
   componentWillMount() {
     this.props.navigator.setTitle({
       title: 'AgroMarket'
-    })
+    });
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.displayFab('shopping-cart', 'cart');
   }
 
-  onPageSelected({position}) {
+  onNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.setState({ visible: true });
+    }
+  }
+
+  onPageSelected({ position }) {
     if (position === 0) {
       this.displayFab('shopping-cart', 'cart');
     } else if (position === 1) {
@@ -95,14 +105,16 @@ export default class HomeScreen extends Component {
       title: product.label,
       passProps: { product },
       sharedElements: [`productImage${product.id}`]
-    })
+    });
+    setTimeout(() => this.setState({ visible: false }), 500)
   }
 
   render() {
+    const { visible } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <IndicatorViewPager
-          style={styles.viewPager}
+          style={[styles.viewPager, { flex: visible ? 1 : 0 }]}
           indicator={this._renderTitleIndicator()}
           onPageSelected={this.onPageSelected.bind(this)}
         >

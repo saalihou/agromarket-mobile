@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import ProductItem from './ProductItem.js';
-import CustomTextInput from '~components/CustomTextInput.js'
+import CustomTextInput from '~components/CustomTextInput.js';
 
 export default class MyList extends React.PureComponent {
   _renderItem = ({item}) => (

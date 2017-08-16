@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
-import FAB from 'react-native-fab';
 import ProductList from '~screens/Home/components/ProductList.js';
+import ActionButton from 'react-native-action-button';
 import Icone from 'react-native-vector-icons/FontAwesome';
 
 
@@ -34,7 +34,7 @@ export default class HomeScreen extends Component {
                         <Text >page three</Text>
                     </View>
                 </IndicatorViewPager>
-                <FAB buttonColor="green" iconTextColor="#FFFFFF"/>
+                <ActionButton buttonColor="rgba(231,76,60,1)" icon={<Icone name='shopping-cart' color='white' size={25} />} />
             </View>
         )
     }

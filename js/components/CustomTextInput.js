@@ -10,7 +10,7 @@ export default class CustomTextInput extends Component {
             <View style={styles.container}>
                 <View style={styles.iconContainer} >
                     <Icon name={this.props.icon} color='white' size={25} />
-                    </View>
+                </View>
                 <TextInput
                     {...this.props}
                     style={[styles.input, this.props.style]}
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        color: 'black',
         fontSize: 15,
         height: 60,
         flex: 1,

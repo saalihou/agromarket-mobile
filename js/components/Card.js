@@ -7,10 +7,6 @@ import colors from '~theme/colors';
 
 export default class Card extends Component {
 
-  componentDidMount() {
-    this.refs.animation.play();
-  }
-
   render() {
     const { animation } = this.props;
     return (
@@ -20,7 +16,6 @@ export default class Card extends Component {
             style={styles.logo}
             source={require('~assets/images/logo.png')}
           />
-          <Animation ref='animation' source={this.props.animation} style={styles.animation} loop={true} />
         </View>
         <View style={styles.card}>
           {this.props.children}

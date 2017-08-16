@@ -1,26 +1,11 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { Navigation } from 'react-native-navigation';
 
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-import Subscribe from '~screens/Subscribe';
+import registerScreens from '~config/registerScreens';
 
-export default class AgroMarket extends Component {
-  render() {
-    return (
-      <View style={{flex:1}}>
-        <Subscribe />
-      </View>
-    );
+registerScreens();
+
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'Home'
   }
-}
-
-AppRegistry.registerComponent('AgroMarket', () => AgroMarket);
+});

@@ -33,7 +33,6 @@ export default class MyList extends React.PureComponent {
   render() {
     return (
       <View>
-        <CustomTextInput icon='search' style={{opacity: 0.6}} />
         <FlatList
           data={this.props.data}
           renderItem={this._renderItem}

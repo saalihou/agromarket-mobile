@@ -3,7 +3,10 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
 import FAB from 'react-native-fab';
 import ProductList from '~screens/Home/components/ProductList.js';
-import Icone from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+
+import colors from '~theme/colors'
 
 const placeholdText =
   'Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit';
@@ -44,12 +47,55 @@ const list = [
 ];
 
 export default class HomeScreen extends Component {
+  static navigatorStyle = {
+    navBarTitleTextCentered: true,
+  };
+
+  static navigatorButtons = {
+  }
+
+  displayFab(icon, id) {
+    MaterialIcon.getImageSource(icon, 30, 'white').then(source => {
+      this.props.navigator.setButtons({
+        fab: {
+          collapsedId: id,
+          collapsedIcon: source,
+          backgroundColor: colors.ACCENT
+        }
+      })
+    })
+  }
+
+  removeFab() {
+    this.props.navigator.setButtons({
+      fab: {}
+    });
+  }
+
+  componentWillMount() {
+    this.props.navigator.setTitle({
+      title: 'AgroMarket'
+    })
+    this.displayFab('add', 'add');
+  }
+
+  onPageSelected({position}) {
+    if (position === 0) {
+      this.displayFab('shopping-cart', 'cart');
+    } else if (position === 1) {
+      this.displayFab('add', 'add');
+    } else {
+      this.removeFab();
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <IndicatorViewPager
           style={styles.viewPager}
           indicator={this._renderTitleIndicator()}
+          onPageSelected={this.onPageSelected.bind(this)}
         >
           <View style={styles.home}>
             <ProductList data={list} />
@@ -61,7 +107,7 @@ export default class HomeScreen extends Component {
             <Text>page three</Text>
           </View>
         </IndicatorViewPager>
-        <FAB buttonColor="green" iconTextColor="#FFFFFF" />
+        {/* <FAB buttonColor="green" iconTextColor="#FFFFFF" /> */}
       </View>
     );
   }
@@ -71,9 +117,9 @@ export default class HomeScreen extends Component {
       <PagerTitleIndicator
         style={styles.indicatorContainer}
         titles={[
-          <Icone color="green" name="home" size={30} />,
-          <Icone color="green" name="id-card" size={30} />,
-          <Icone color="green" name="user" size={30} />
+          <Icon color="green" name="home" size={30} />,
+          <Icon color="green" name="id-card" size={30} />,
+          <Icon color="green" name="user" size={30} />
         ]}
       />
     );

@@ -6,12 +6,8 @@ import CustomTextInput from '~components/CustomTextInput.js'
 export default class MyList extends React.PureComponent {
   _renderItem = ({item}) => (
     <ProductItem
-      id={item.id}
-      title={item.title}
-      image={item.image}
-      description={item.description}
-      price={item.price}
-      stock={item.stock}
+      item={item}
+      onOpen={this.props.onOpen}
     />
   );
 

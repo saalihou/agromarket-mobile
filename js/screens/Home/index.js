@@ -14,35 +14,35 @@ const placeholdText =
 const list = [
   {
     id: 1,
-    title: 'Test 1',
+    label: 'Test 1',
     price: '1000',
     description: placeholdText,
     stock: 10,
-    image: '~assets/images/mixt.png'
+    image: require('~assets/images/mixt.png')
   },
   {
     id: 2,
-    title: 'Test 2',
+    label: 'Test 2',
     price: '1000',
     description: placeholdText,
     stock: 10,
-    image: '~assets/images/mixt.png'
+    image: require('~assets/images/mixt.png')
   },
   {
     id: 3,
-    title: 'Test 3',
+    label: 'Test 3',
     price: '1000',
     description: placeholdText,
     stock: 10,
-    image: '~assets/images/mixt.png'
+    image: require('~assets/images/mixt.png')
   },
   {
     id: 4,
-    title: 'Test 4',
+    label: 'Test 4',
     price: '1000',
     description: placeholdText,
     stock: 10,
-    image: '~assets/images/mixt.png'
+    image: require('~assets/images/mixt.png')
   }
 ];
 
@@ -76,7 +76,7 @@ export default class HomeScreen extends Component {
     this.props.navigator.setTitle({
       title: 'AgroMarket'
     })
-    this.displayFab('add', 'add');
+    this.displayFab('shopping-cart', 'cart');
   }
 
   onPageSelected({position}) {
@@ -89,6 +89,15 @@ export default class HomeScreen extends Component {
     }
   }
 
+  onProductOpen(product) {
+    this.props.navigator.push({
+      screen: 'ProductDetail',
+      title: product.label,
+      passProps: { product },
+      sharedElements: [`productImage${product.id}`]
+    })
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -98,7 +107,7 @@ export default class HomeScreen extends Component {
           onPageSelected={this.onPageSelected.bind(this)}
         >
           <View style={styles.home}>
-            <ProductList data={list} />
+            <ProductList data={list} onOpen={this.onProductOpen.bind(this)} />
           </View>
           <View style={{ backgroundColor: 'green' }}>
             <Text>page three</Text>
@@ -107,7 +116,6 @@ export default class HomeScreen extends Component {
             <Text>page three</Text>
           </View>
         </IndicatorViewPager>
-        {/* <FAB buttonColor="green" iconTextColor="#FFFFFF" /> */}
       </View>
     );
   }

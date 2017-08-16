@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
 import FAB from 'react-native-fab';
-import ProductList from './Components/ProductList.js';
+import ProductList from '~screens/Home/components/ProductList.js';
 import Icone from 'react-native-vector-icons/FontAwesome';
 
 
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         paddingTop: 51,
+        zIndex: 2,
     },
     indicatorContainer: {
         backgroundColor: '#ecf0f1',

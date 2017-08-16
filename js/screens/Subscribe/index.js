@@ -23,11 +23,19 @@ import codeValidator from './validations/code';
 import persoInfosValidator from './validations/persoInfos';
 import addressValidator from './validations/address';
 
+import screen from '~hoc/screen';
+
 @observer
-export default class SubscribeScreen extends Component {
+class SubscribeScreen extends Component {
   state = {
     activePage: 0
   };
+
+  componentWillMount() {
+    this.props.navigator.setTitle({
+      title: 'Inscription'
+    })
+  }
 
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
@@ -60,7 +68,7 @@ export default class SubscribeScreen extends Component {
 
   async onCheckCodeSubmit({ code }) {
     try {
-      if (!this.validate({code}, codeValidator)) return;
+      if (!this.validate({ code }, codeValidator)) return;
       const { verified } = await authStore.verifyPhone(code);
       if (!verified) {
         Alert.alert(`Erreur`, `Code invalide`);
@@ -92,14 +100,22 @@ export default class SubscribeScreen extends Component {
     }
   }
 
-  onPageSelected({position}) {
-    this.setState({ activePage: position })
+  onPageSelected({ position }) {
+    this.setState({ activePage: position });
   }
 
   render() {
     const { activePage } = this.state;
     return (
-      <View style={{ flex: 1, paddingLeft: 20, paddingRight: 20, paddingTop: 50, paddingBottom: 50 }}>
+      <View
+        style={{
+          flex: 1,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 50,
+          paddingBottom: 50
+        }}
+      >
         <Image
           source={require('~assets/images/fruits.png')}
           style={styles.backgroundImage}
@@ -164,3 +180,5 @@ const styles = StyleSheet.create({
     zIndex: 2
   }
 });
+
+export default screen(SubscribeScreen);

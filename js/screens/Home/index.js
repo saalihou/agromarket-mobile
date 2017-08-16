@@ -71,18 +71,46 @@ class HomeScreen extends Component {
     });
   }
 
-  componentWillMount() {
-    this.props.navigator.setTitle({
+  async componentWillMount() {
+    const { navigator } = this.props;
+    navigator.setTitle({
       title: 'AgroMarket'
     });
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.displayFab('shopping-cart', 'cart');
+    const source = await MaterialIcon.getImageSource(
+      'person-add',
+      30,
+      colors.PRIMARY
+    );
+    navigator.setButtons({
+      rightButtons: [
+        {
+          title: 'Connexion',
+          id: 'login',
+          icon: source
+        }
+      ]
+    });
   }
 
   onNavigatorEvent(event) {
+    const { navigator } = this.props;
     if (event.id === 'willAppear') {
       this.setState({ visible: true });
     }
+    if (event.type === 'NavBarButtonPress') {
+      if (event.id === 'login') {
+        navigator.push({
+          screen: 'Subscribe'
+        });
+        this.onNavigate();
+      }
+    }
+  }
+
+  onNavigate() {
+    setTimeout(() => this.setState({ visible: false }), 350);
   }
 
   onPageSelected({ position }) {
@@ -102,7 +130,7 @@ class HomeScreen extends Component {
       passProps: { product },
       sharedElements: [`productImage${product.id}`]
     });
-    setTimeout(() => this.setState({ visible: false }), 350);
+    this.onNavigate();
   }
 
   render() {

@@ -11,13 +11,13 @@ import {
   Text,
   View
 } from 'react-native';
-import Home from '~screens/Home';
+import Subscribe from '~screens/Subscribe';
 
 export default class AgroMarket extends Component {
   render() {
     return (
       <View style={{flex:1}}>
-        <Home />
+        <Subscribe />
       </View>
     );
   }

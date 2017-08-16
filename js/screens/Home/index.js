@@ -8,6 +8,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import colors from '~theme/colors';
 
+import screen from '~hoc/screen';
+
 const placeholdText =
   'Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit';
 
@@ -46,13 +48,7 @@ const list = [
   }
 ];
 
-export default class HomeScreen extends Component {
-  static navigatorStyle = {
-    navBarTitleTextCentered: true
-  };
-
-  static navigatorButtons = {};
-
+class HomeScreen extends Component {
   state = {
     visible: true
   };
@@ -106,7 +102,7 @@ export default class HomeScreen extends Component {
       passProps: { product },
       sharedElements: [`productImage${product.id}`]
     });
-    setTimeout(() => this.setState({ visible: false }), 350 )
+    setTimeout(() => this.setState({ visible: false }), 350);
   }
 
   render() {
@@ -177,3 +173,5 @@ const styles = StyleSheet.create({
     zIndex: 0
   }
 });
+
+export default screen(HomeScreen);

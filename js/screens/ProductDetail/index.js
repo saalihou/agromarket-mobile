@@ -5,11 +5,9 @@ import { SharedElementTransition } from 'react-native-navigation';
 
 import colors from '~theme/colors';
 
-export default class ProductDetailScreen extends Component {
-  static navigatorStyle = {
-    navBarTitleTextCentered: true
-  };
+import screen from '~hoc/screen';
 
+class ProductDetailScreen extends Component {
   componentWillMount() {}
 
   render() {
@@ -42,3 +40,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover'
   }
 });
+
+export default screen(ProductDetailScreen);

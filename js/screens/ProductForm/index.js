@@ -8,20 +8,27 @@ import {
   StyleSheet
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
+import { observer } from 'mobx-react';
 
 import Card from '~components/Card';
 import FormSection from '~components/FormSection';
-
 import screen from '~hoc/screen';
+
+import publicationStore from '~stores/publication';
 
 import genInfosValidator from './validators/genInfos';
 import typePriceValidator from './validators/typePrice';
 import addressValidator from './validators/address';
 
+@observer
 class ProductFormScreen extends Component {
   state = {
     product: {}
   };
+
+  componentDidMount() {
+    publicationStore.refreshProductTypes();
+  }
 
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
@@ -112,16 +119,10 @@ class ProductFormScreen extends Component {
                     type: 'picker',
                     icon: 'palette',
                     prompt: 'Type de produit',
-                    items: [
-                      {
-                        label: 'Pastèque',
-                        value: 1
-                      },
-                      {
-                        label: 'Mouton',
-                        value: 2
-                      }
-                    ]
+                    items: publicationStore.productTypes.map(t => ({
+                      value: t.id,
+                      label: t.label
+                    }))
                   },
                   {
                     key: 'unitPrice',

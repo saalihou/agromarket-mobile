@@ -3,15 +3,20 @@ import { Picker, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class CustomPicker extends Component {
+    static defaultProps = {
+        items: []
+    }
     render() {
+        const { items } = this.props;
         return(
             <View style={styles.container}>
                 <View style={styles.icon}>
                     <Icon name={this.props.icon} color='white' size={25} />
                 </View>
-                <Picker itemStyle={styles.item} style={styles.picker} prompt="Type de produit">
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
+                <Picker itemStyle={styles.item} {...this.props} style={[styles.picker, this.props.style]}>
+                    {items.map(item => (
+                        <Picker.Item label={item.label} value={item.value} />
+                    ))}
                 </Picker>
             </View>
         )

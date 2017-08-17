@@ -9,19 +9,50 @@ import {
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
-import GenInfos from './GenInfos.js';
-import TypePrice from './TypePrice.js';
-import AddressForm from './AddressForm.js';
-
 import Card from '~components/Card';
+import FormSection from '~components/FormSection';
 
 import screen from '~hoc/screen';
 
+import genInfosValidator from './validators/genInfos';
+import typePriceValidator from './validators/typePrice';
+import addressValidator from './validators/address';
+
 class ProductFormScreen extends Component {
-  state = {};
+  state = {
+    product: {}
+  };
 
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
+  }
+
+  onGenInfosSubmit(infos) {
+    this.setState({
+      product: { ...this.state.product, ...infos }
+    });
+    this.gotoPage(1);
+  }
+
+  onTypePriceSubmit(infos) {
+    this.setState({
+      product: { ...this.state.product, ...infos }
+    });
+    this.gotoPage(2);
+  }
+
+  onAddressSubmit(infos) {
+    this.setState(
+      {
+        product: {
+          ...this.state.product,
+          address: infos
+        }
+      },
+      () => {
+        alert(JSON.stringify(this.state.product));
+      }
+    );
   }
 
   async componentWillMount() {
@@ -47,20 +78,85 @@ class ProductFormScreen extends Component {
           source={require('~assets/images/fruits.png')}
           style={styles.backgroundImage}
         />
-        <Card animation={require('~assets/animations/pink_drink_machine.json')}>
+        <Card>
           <IndicatorViewPager
             style={styles.viewPager}
-            scrollEnabled={true}
+            scrollEnabled={false}
             ref="viewPager"
           >
             <View>
-              <GenInfos />
+              <FormSection
+                inputs={[
+                  {
+                    key: 'label',
+                    placeholder: 'Titre',
+                    icon: 'mode-edit'
+                  },
+                  {
+                    key: 'description',
+                    multiline: true,
+                    numberOfLines: 5,
+                    placeholder: 'Description',
+                    icon: 'description'
+                  }
+                ]}
+                validator={genInfosValidator}
+                onSubmit={this.onGenInfosSubmit.bind(this)}
+              />
             </View>
             <View>
-              <TypePrice />
+              <FormSection
+                inputs={[
+                  {
+                    key: 'productTypeId',
+                    type: 'picker',
+                    icon: 'palette',
+                    prompt: 'Type de produit',
+                    items: [
+                      {
+                        label: 'Pastèque',
+                        value: 1
+                      },
+                      {
+                        label: 'Mouton',
+                        value: 2
+                      }
+                    ]
+                  },
+                  {
+                    key: 'unitPrice',
+                    icon: 'monetization-on',
+                    placeholder: 'Prix',
+                    keyboardType: 'numeric'
+                  },
+                  {
+                    key: 'stock',
+                    icon: 'unarchive',
+                    placeholder: 'Stock',
+                    keyboardType: 'numeric'
+                  }
+                ]}
+                validator={typePriceValidator}
+                onSubmit={this.onTypePriceSubmit.bind(this)}
+              />
             </View>
             <View>
-              <AddressForm />
+              <FormSection
+                inputs={[
+                  {
+                    key: 'region',
+                    placeholder: 'Région',
+                    icon: 'place'
+                  },
+                  {
+                    key: 'department',
+                    placeholder: 'Département',
+                    icon: 'near-me'
+                  }
+                ]}
+                validator={addressValidator}
+                onSubmit={this.onAddressSubmit.bind(this)}
+              />
             </View>
           </IndicatorViewPager>
         </Card>

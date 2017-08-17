@@ -1,11 +1,33 @@
 import React, { Component } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import merge from 'lodash/merge';
 
 import colors from '~theme/colors';
 
-export default function screen(Component) {
+export default function screen(Component, options = {}) {
   class WrappedComponent extends Component {
+    state = {
+      loading: options.buffer ? true : false
+    };
+
+    componentDidMount() {
+      if (options.buffer) {
+        setTimeout(() => {
+          this.setState({
+            loading: false
+          });
+        });
+      }
+    }
+
     render() {
+      if (this.state.loading) {
+        return (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator loading={true} size={20} />
+          </View>
+        );
+      }
       return <Component {...this.props} />;
     }
   }
@@ -25,3 +47,12 @@ export default function screen(Component) {
 
   return WrappedComponent;
 }
+
+const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white'
+  }
+});

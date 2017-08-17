@@ -34,7 +34,7 @@ class SubscribeScreen extends Component {
   componentWillMount() {
     this.props.navigator.setTitle({
       title: 'Inscription'
-    })
+    });
   }
 
   gotoPage(page) {
@@ -181,4 +181,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default screen(SubscribeScreen);
+export default screen(SubscribeScreen, { buffer: true });

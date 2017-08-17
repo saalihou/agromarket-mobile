@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default screen(SubscribeScreen);
+export default screen(SubscribeScreen, { buffer: true });

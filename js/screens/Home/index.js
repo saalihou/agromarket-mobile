@@ -206,4 +206,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default screen(HomeScreen);
+export default screen(HomeScreen, { buffer: true });

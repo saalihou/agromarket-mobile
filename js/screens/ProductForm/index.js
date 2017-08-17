@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     zIndex: 0
   },
   viewPager: {
-    flex: 1,
+    flex: 0.8,
     zIndex: 2
   }
 });

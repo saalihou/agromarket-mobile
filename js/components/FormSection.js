@@ -6,7 +6,8 @@ import {
   TextInput,
   Image,
   Button,
-  Alert
+  Alert,
+  StyleSheet
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
@@ -83,7 +84,7 @@ export default class FormSection extends Component {
   render() {
     const { inputs } = this.props;
     return (
-      <View>
+      <View style={styles.container}>
         <View style={{ paddingBottom: 40 }}>
           {inputs.map(this.renderInput.bind(this))}
         </View>
@@ -96,3 +97,10 @@ export default class FormSection extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between'
+  }
+})

@@ -33,7 +33,6 @@ const styles = {
   },
   card: {
     flex: 1,
-    justifyContent: 'center',
     flexDirection: 'column',
     padding: 25,
     zIndex: 2

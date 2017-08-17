@@ -15,7 +15,7 @@ export default class CustomPicker extends Component {
                 </View>
                 <Picker itemStyle={styles.item} {...this.props} style={[styles.picker, this.props.style]}>
                     {items.map(item => (
-                        <Picker.Item label={item.label} value={item.value} />
+                        <Picker.Item label={item.label} value={item.value} key={item.value} />
                     ))}
                 </Picker>
             </View>

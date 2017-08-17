@@ -105,6 +105,10 @@ class HomeScreen extends Component {
           screen: 'Subscribe'
         });
         this.onNavigate();
+      } else if (event.id === 'add') {
+        navigator.push({
+          screen: 'ProductForm'
+        });
       }
     }
   }

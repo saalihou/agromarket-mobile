@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { SharedElementTransition } from 'react-native-navigation';
+import ParallaxScrollView from 'react-native-parallax-scrollview';
+
 
 import colors from '~theme/colors';
 

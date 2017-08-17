@@ -8,17 +8,16 @@ import {
   StyleSheet
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
-import { observer } from 'mobx-react';
 
 import GenInfos from './GenInfos.js';
 import TypePrice from './TypePrice.js';
 import AddressForm from './AddressForm.js';
 
-import authStore from '~stores/auth';
 import Card from '~components/Card';
 
-@observer
-export default class SubscribeScreen extends Component {
+import screen from '~hoc/screen';
+
+class SubscribeScreen extends Component {
   state = {
     activePage: 0
   };
@@ -29,6 +28,13 @@ export default class SubscribeScreen extends Component {
 
   onPageSelected({position}) {
     this.setState({ activePage: position })
+  }
+
+  async componentWillMount() {
+    const { navigator } = this.props;
+    navigator.setTitle({
+        title: 'Publier un produit'
+    });
   }
 
   render() {
@@ -48,19 +54,16 @@ export default class SubscribeScreen extends Component {
           >
             <View>
               <GenInfos
-                loading={authStore.loading}
                 active={activePage === 0}
               />
             </View>
             <View>
               <TypePrice
-                loading={authStore.loading}
                 active={activePage === 1}
               />
             </View>
             <View>
               <AddressForm
-                loading={authStore.loading}
                 active={activePage === 3}
               />
             </View>
@@ -89,3 +92,5 @@ const styles = StyleSheet.create({
     zIndex: 2
   }
 });
+
+export default screen(SubscribeScreen);

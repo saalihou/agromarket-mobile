@@ -18,29 +18,31 @@ import Card from '~components/Card';
 import screen from '~hoc/screen';
 
 class ProductFormScreen extends Component {
-  state = {
-    activePage: 0
-  };
+  state = {};
 
   gotoPage(page) {
     this.refs.viewPager.setPage(page);
   }
 
-  onPageSelected({position}) {
-    this.setState({ activePage: position })
-  }
-
   async componentWillMount() {
     const { navigator } = this.props;
     navigator.setTitle({
-        title: 'Publier un produit'
+      title: 'Publier un produit'
     });
   }
 
   render() {
     const { activePage } = this.state;
     return (
-      <View style={{ flex: 1, paddingLeft: 20, paddingRight: 20, paddingTop: 50, paddingBottom: 50 }}>
+      <View
+        style={{
+          flex: 1,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 50,
+          paddingBottom: 50
+        }}
+      >
         <Image
           source={require('~assets/images/fruits.png')}
           style={styles.backgroundImage}
@@ -49,23 +51,16 @@ class ProductFormScreen extends Component {
           <IndicatorViewPager
             style={styles.viewPager}
             scrollEnabled={true}
-            onPageSelected={this.onPageSelected.bind(this)}
             ref="viewPager"
           >
             <View>
-              <GenInfos
-                active={activePage === 0}
-              />
+              <GenInfos />
             </View>
             <View>
-              <TypePrice
-                active={activePage === 1}
-              />
+              <TypePrice />
             </View>
             <View>
-              <AddressForm
-                active={activePage === 3}
-              />
+              <AddressForm />
             </View>
           </IndicatorViewPager>
         </Card>

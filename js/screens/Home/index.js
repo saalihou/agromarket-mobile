@@ -109,6 +109,7 @@ class HomeScreen extends Component {
         navigator.push({
           screen: 'ProductForm'
         });
+        this.onNavigate();
       }
     }
   }

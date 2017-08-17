@@ -17,7 +17,7 @@ import Card from '~components/Card';
 
 import screen from '~hoc/screen';
 
-class SubscribeScreen extends Component {
+class ProductFormScreen extends Component {
   state = {
     activePage: 0
   };
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default screen(SubscribeScreen, { buffer: true });
+export default screen(ProductFormScreen, { buffer: true });

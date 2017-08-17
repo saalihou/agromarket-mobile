@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
 
     input: {
         fontSize: 15,
-        height: 60,
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.4)',
         color: 'white',

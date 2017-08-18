@@ -4,17 +4,27 @@ import {
   Text,
   View,
   Image,
+  Button,
   BackAndroid,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity,
+  ProgressBarAndroid,
+  ScrollView
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+
 import { observer } from 'mobx-react';
+import chunk from 'lodash/chunk';
+
+import screen from '~hoc/screen';
+import colors from '~theme/colors';
 
 import Card from '~components/Card';
 import FormSection from '~components/FormSection';
-import screen from '~hoc/screen';
 
 import publicationStore from '~stores/publication';
+import uploadStore from '~stores/upload';
 
 import genInfosValidator from './validators/genInfos';
 import typePriceValidator from './validators/typePrice';
@@ -49,18 +59,46 @@ class ProductFormScreen extends Component {
   }
 
   onAddressSubmit(infos) {
-    this.setState(
-      {
-        product: {
-          ...this.state.product,
-          zone: infos
-        }
-      },
-      async () => {
-        const publication = await publicationStore.publish(this.state.product);
-        alert(publication.id);
+    this.setState({
+      product: {
+        ...this.state.product,
+        zone: infos
       }
-    );
+    });
+    this.gotoPage(3);
+  }
+
+  async addImages() {
+    try {
+      const [jobId, uploadPromise] = await uploadStore.selectImagesAndUpload();
+      this.setState({ uploadJobId: jobId, uploading: true });
+      const pictures = await uploadPromise;
+      this.setState({
+        product: { ...this.state.product, pictures },
+        uploading: false
+      });
+    } catch (e) {
+      if (e.code === 'E_PICKER_CANCELLED') {
+        return;
+      }
+      Alert.alert(
+        `Erreur`,
+        `Une erreur est survenue lors de la sélection d'images. ${e.message}`
+      );
+    }
+  }
+
+  async publish() {
+    try {
+      if (publicationStore.publishing) {
+        return;
+      }
+      await publicationStore.publish(this.state.product);
+      Alert.alert(`Succès`, `Votre produit a été publié avec succès`);
+      this.props.navigator.pop();
+    } catch (e) {
+      Alert.alert(`Erreur`, `Erreur lors de la publication. ${e.message}`);
+    }
   }
 
   async componentWillMount() {
@@ -89,7 +127,7 @@ class ProductFormScreen extends Component {
         <Card>
           <IndicatorViewPager
             style={styles.viewPager}
-            scrollEnabled={false}
+            scrollEnabled={true}
             ref="viewPager"
           >
             <View>
@@ -160,6 +198,49 @@ class ProductFormScreen extends Component {
                 onSubmit={this.onAddressSubmit.bind(this)}
               />
             </View>
+            <View style={styles.addImagesSection}>
+              {!this.state.uploadJobId
+                ? <TouchableOpacity onPress={this.addImages.bind(this)}>
+                    <Text style={styles.addImagesText}>
+                      <MaterialIcon name="add" size={20} color="white" />Ajouter
+                      des images de votre produit
+                    </Text>
+                  </TouchableOpacity>
+                : <ScrollView style={styles.previewsContainer}>
+                    {chunk(
+                      uploadStore.jobs[this.state.uploadJobId],
+                      3
+                    ).map((chunk, i) =>
+                      <View style={styles.previewRow} key={i}>
+                        {chunk.map(upload =>
+                          <View key={upload.uploadId}>
+                            <Image
+                              source={{ uri: upload.path }}
+                              style={styles.preview}
+                            />
+                            <Text>
+                              {uploadStore.progresses[upload.uploadId]}
+                            </Text>
+                            <ProgressBarAndroid
+                              color={colors.PRIMARY}
+                              indeterminate={false}
+                              progress={uploadStore.progresses.get(
+                                upload.uploadId
+                              )}
+                              styleAttr="Horizontal"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    )}
+                  </ScrollView>}
+              <Button
+                title="Publier"
+                color={colors.PRIMARY}
+                onPress={this.publish.bind(this)}
+                disabled={publicationStore.publishing || this.state.uploading}
+              />
+            </View>
           </IndicatorViewPager>
         </Card>
       </View>
@@ -183,6 +264,27 @@ const styles = StyleSheet.create({
   viewPager: {
     flex: 0.8,
     zIndex: 2
+  },
+  addImagesSection: {
+    justifyContent: 'space-between',
+    alignItems: 'stretch'
+  },
+  addImagesText: {
+    fontSize: 25,
+    color: 'white',
+    textAlign: 'center'
+  },
+  previewsContainer: {
+    flex: 1
+  },
+  previewRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  preview: {
+    width: 90,
+    height: 90,
+    borderRadius: 3
   }
 });
 

@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 
 import com.reactnativenavigation.controllers.ActivityCallbacks;
 
@@ -29,7 +30,8 @@ public class MainApplication extends NavigationApplication {
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
           new VectorIconsPackage(),
-          new LottiePackage()
+          new LottiePackage(),
+          new PickerPackage()
         );
     }
 

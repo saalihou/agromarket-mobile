@@ -53,11 +53,12 @@ class ProductFormScreen extends Component {
       {
         product: {
           ...this.state.product,
-          address: infos
+          zone: infos
         }
       },
-      () => {
-        alert(JSON.stringify(this.state.product));
+      async () => {
+        const publication = await publicationStore.publish(this.state.product);
+        alert(publication.id);
       }
     );
   }

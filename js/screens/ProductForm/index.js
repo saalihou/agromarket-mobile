@@ -127,7 +127,7 @@ class ProductFormScreen extends Component {
         <Card>
           <IndicatorViewPager
             style={styles.viewPager}
-            scrollEnabled={true}
+            scrollEnabled={false}
             ref="viewPager"
           >
             <View>

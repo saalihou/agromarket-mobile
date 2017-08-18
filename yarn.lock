@@ -3450,10 +3450,6 @@ react-native-aws3@^0.0.8:
     buffer "^4.5.1"
     crypto-js "^3.1.6"
 
-"react-native-background-upload@https://github.com/ovr/react-native-background-upload.git#patch-1":
-  version "3.0.0-beta"
-  resolved "https://github.com/ovr/react-native-background-upload.git#791aab52a90afb13fa395caf4ac3677cf811ad5a"
-
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

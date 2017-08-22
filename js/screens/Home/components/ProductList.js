@@ -27,12 +27,14 @@ export default class MyList extends React.PureComponent {
 
   
   render() {
+    const { data, ...props } = this.props;
     return (
       <View>
         <FlatList
           data={this.props.data}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
+          {...props}
         />
       </View>
     );

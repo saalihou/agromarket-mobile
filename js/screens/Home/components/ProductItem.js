@@ -35,7 +35,7 @@ export default class ProductItem extends React.PureComponent {
                   marginRight: 5
                 }}
               >
-                CFA {item.price}
+                CFA {item.unitPrice}
               </Text>
               <FAIcon name="tags" size={15} color="orange" />
             </View>
@@ -44,7 +44,8 @@ export default class ProductItem extends React.PureComponent {
           <SharedElementTransition sharedElementId={`productImage${item.id}`}>
             <Image
               style={styles.picture}
-              source={require('~assets/images/mixt.png')}
+              source={item.image || require('~assets/images/logo.png')}
+              resizeMode={item.image ? 'cover' : 'contain'}
             />
           </SharedElementTransition>
 

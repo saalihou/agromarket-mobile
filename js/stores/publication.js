@@ -26,9 +26,16 @@ type Publication = {
   userId: string
 };
 
+const GET_PUBLICATIONS_LIMIT = 20;
+
 class PublicationStore {
   @observable productTypes: Array<ProductType> = [];
   @observable publishing: boolean;
+  @observable fetching: boolean;
+  @observable publications: Array<Publication> = [];
+
+  _currentPublicationIndex = 0;
+  _lastPublicationReached = false;
 
   async refreshProductTypes() {
     const response = await api.get('/ProductTypes');
@@ -47,6 +54,29 @@ class PublicationStore {
     }
     this.publishing = false;
     return response.data;
+  }
+
+  async getNextPublications() {
+    if (this.fetching || this._lastPublicationReached) {
+      return;
+    }
+    this.fetching = true;
+    const response = await api.get('/Publications', {
+      filter: {
+        limit: GET_PUBLICATIONS_LIMIT,
+        skip: this._currentPublicationIndex
+      }
+    });
+    if (!response.ok) {
+      this.fetching = false;
+      throw response.data.error || response.data;
+    }
+    this.fetching = false;
+    this._currentPublicationIndex += response.data.length;
+    this.publications = this.publications.concat(response.data);
+    if (response.data.length < GET_PUBLICATIONS_LIMIT) {
+      this._lastPublicationReached = true;
+    }
   }
 }
 

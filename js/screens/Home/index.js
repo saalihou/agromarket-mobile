@@ -1,56 +1,25 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
 import ProductList from '~screens/Home/components/ProductList.js';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import { autorun } from 'mobx';
+import { observer } from 'mobx-react';
+
 import colors from '~theme/colors';
 
 import screen from '~hoc/screen';
 
-const placeholdText =
-  'Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit Lorem Ipsum Dolor Sit Amet Consectetur Adispising Elit';
+import publicationStore from '~stores/publication';
 
-const list = [
-  {
-    id: 1,
-    label: 'Test 1',
-    price: '1000',
-    description: placeholdText,
-    stock: 10,
-    image: require('~assets/images/mixt.png')
-  },
-  {
-    id: 2,
-    label: 'Test 2',
-    price: '1000',
-    description: placeholdText,
-    stock: 10,
-    image: require('~assets/images/mixt.png')
-  },
-  {
-    id: 3,
-    label: 'Test 3',
-    price: '1000',
-    description: placeholdText,
-    stock: 10,
-    image: require('~assets/images/mixt.png')
-  },
-  {
-    id: 4,
-    label: 'Test 4',
-    price: '1000',
-    description: placeholdText,
-    stock: 10,
-    image: require('~assets/images/mixt.png')
-  }
-];
-
+@observer
 class HomeScreen extends Component {
   state = {
-    visible: true
+    visible: true,
+    publications: []
   };
 
   displayFab(icon, id) {
@@ -91,6 +60,18 @@ class HomeScreen extends Component {
           icon: source
         }
       ]
+    });
+
+    publicationStore.getNextPublications();
+
+    autorun(() => {
+      console.log(publicationStore.publications);
+      this.setState({
+        publications: publicationStore.publications.map(p => ({
+          ...p,
+          image: p.pictures ? { uri: p.pictures[0] } : undefined
+        }))
+      });
     });
   }
 
@@ -148,7 +129,19 @@ class HomeScreen extends Component {
           onPageSelected={this.onPageSelected.bind(this)}
         >
           <View style={styles.home}>
-            <ProductList data={list} onOpen={this.onProductOpen.bind(this)} />
+            <View style={styles.productListContainer}>
+              <ProductList
+                data={this.state.publications}
+                onOpen={this.onProductOpen.bind(this)}
+                onEndReachedThreshold={4}
+                onEndReached={() => publicationStore.getNextPublications()}
+              />
+            </View>
+            {publicationStore.fetching &&
+              !this.state.publications.length &&
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator size={25} color={colors.PRIMARY} />
+              </View>}
           </View>
           <View style={{ backgroundColor: 'green' }}>
             <Text>page three</Text>
@@ -204,7 +197,12 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 0
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
-export default screen(HomeScreen, { buffer: true });
+export default screen(HomeScreen);

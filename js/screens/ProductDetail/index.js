@@ -29,7 +29,11 @@ class ProductDetailScreen extends Component {
             easing: 'FastOutSlowIn'
           }}
         >
-          <Image style={styles.image} source={product.image} />
+          <Image
+            style={styles.image}
+            source={product.image || require('~assets/images/logo.png')}
+            resizeMode={product.image ? 'cover' : 'contain'}
+          />
         </SharedElementTransition>
       </View>
     );

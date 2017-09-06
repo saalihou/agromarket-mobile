@@ -60,11 +60,15 @@ class AuthStore {
       if (!userResponse.ok) {
         throw userResponse.data.error || userResponse.data;
       }
-      this.currentUser = userResponse.data;
-      await AsyncStorage.setItem(
-        'session',
-        JSON.stringify({ currentUser: this.currentUser, token: this.token })
-      );
+      const user = userResponse.data;
+      await AsyncStorage.multiSet([
+        [
+          'session',
+          JSON.stringify({ currentUser: user, token: this.token })
+        ],
+        ['currentUserId', user.id]
+      ]);
+      this.currentUser = user;
       return this.currentUser;
     } catch (e) {
       throw e;
@@ -82,7 +86,7 @@ class AuthStore {
       if (!logoutResponse.ok) {
         throw logoutResponse.data.error || logoutResponse.data;
       }
-      await AsyncStorage.removeItem('session');
+      await AsyncStorage.multiRemove(['session', 'currentUserId']);
       return true;
     } catch (e) {
       throw e;
@@ -101,6 +105,7 @@ class AuthStore {
       const sessionObject = JSON.parse(session);
       this.currentUser = sessionObject.currentUser;
       this.token = sessionObject.token;
+      api.setHeader('Authorization', this.token.id);
     } catch (e) {
       console.log('Session restore failed', e);
     }

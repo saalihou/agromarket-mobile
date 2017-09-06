@@ -9,7 +9,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ProgressBarAndroid,
-  ScrollView
+  ScrollView,
+  ToastAndroid
 } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -25,6 +26,7 @@ import FormSection from '~components/FormSection';
 
 import publicationStore from '~stores/publication';
 import uploadStore from '~stores/upload';
+import authStore from '~stores/auth';
 
 import genInfosValidator from './validators/genInfos';
 import typePriceValidator from './validators/typePrice';
@@ -91,6 +93,16 @@ class ProductFormScreen extends Component {
   async publish() {
     try {
       if (publicationStore.publishing) {
+        return;
+      }
+      if (!authStore.currentUser) {
+        ToastAndroid.show(
+          'Veuillez vous connecter afin de publier votre annonce.',
+          ToastAndroid.LONG
+        );
+        this.props.navigator.push({
+          screen: 'Login'
+        });
         return;
       }
       await publicationStore.publish(this.state.product);
@@ -199,41 +211,41 @@ class ProductFormScreen extends Component {
               />
             </View>
             <View style={styles.addImagesSection}>
-              {!this.state.uploadJobId
-                ? <TouchableOpacity onPress={this.addImages.bind(this)}>
-                    <Text style={styles.addImagesText}>
-                      <MaterialIcon name="add" size={20} color="white" />Ajouter
-                      des images de votre produit
-                    </Text>
-                  </TouchableOpacity>
-                : <ScrollView style={styles.previewsContainer}>
-                    {chunk(
-                      uploadStore.jobs[this.state.uploadJobId],
-                      3
-                    ).map((chunk, i) =>
-                      <View style={styles.previewRow} key={i}>
-                        {chunk.map(upload =>
-                          <View key={upload.uploadId}>
-                            <Image
-                              source={{ uri: upload.path }}
-                              style={styles.preview}
-                            />
-                            <Text>
-                              {uploadStore.progresses[upload.uploadId]}
-                            </Text>
-                            <ProgressBarAndroid
-                              color={colors.PRIMARY}
-                              indeterminate={false}
-                              progress={uploadStore.progresses.get(
-                                upload.uploadId
-                              )}
-                              styleAttr="Horizontal"
-                            />
-                          </View>
-                        )}
-                      </View>
-                    )}
-                  </ScrollView>}
+              {!this.state.uploadJobId ? (
+                <TouchableOpacity onPress={this.addImages.bind(this)}>
+                  <Text style={styles.addImagesText}>
+                    <MaterialIcon name="add" size={20} color="white" />Ajouter
+                    des images de votre produit
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <ScrollView style={styles.previewsContainer}>
+                  {chunk(
+                    uploadStore.jobs[this.state.uploadJobId],
+                    3
+                  ).map((chunk, i) => (
+                    <View style={styles.previewRow} key={i}>
+                      {chunk.map(upload => (
+                        <View key={upload.uploadId}>
+                          <Image
+                            source={{ uri: upload.path }}
+                            style={styles.preview}
+                          />
+                          <Text>{uploadStore.progresses[upload.uploadId]}</Text>
+                          <ProgressBarAndroid
+                            color={colors.PRIMARY}
+                            indeterminate={false}
+                            progress={uploadStore.progresses.get(
+                              upload.uploadId
+                            )}
+                            styleAttr="Horizontal"
+                          />
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </ScrollView>
+              )}
               <Button
                 title="Publier"
                 color={colors.PRIMARY}

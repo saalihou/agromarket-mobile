@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  Alert
+} from 'react-native';
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
 import ProductList from '~screens/Home/components/ProductList.js';
 import ActionButton from 'react-native-action-button';
@@ -46,8 +53,11 @@ class HomeScreen extends Component {
     navigator.setTitle({
       title: 'AgroMarket'
     });
+
     navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+
     this.displayFab('shopping-cart', 'cart');
+
     const loginButtonIcon = await MaterialIcon.getImageSource(
       'person-add',
       30,
@@ -60,7 +70,7 @@ class HomeScreen extends Component {
       colors.PRIMARY
     );
 
-    autorun(async () => {
+    autorun(() => {
       if (authStore.currentUser) {
         navigator.setButtons({
           rightButtons: [
@@ -85,7 +95,6 @@ class HomeScreen extends Component {
     });
 
     publicationStore.getNextPublications();
-
     autorun(() => {
       this.setState({
         publications: publicationStore.publications.map(p => ({
@@ -107,6 +116,8 @@ class HomeScreen extends Component {
           screen: 'Login'
         });
         this.onNavigate();
+      } else if (event.id === 'logout') {
+        this.logout();
       } else if (event.id === 'add') {
         navigator.push({
           screen: 'ProductForm'
@@ -138,6 +149,21 @@ class HomeScreen extends Component {
       sharedElements: [`productImage${product.id}`]
     });
     this.onNavigate();
+  }
+
+  logout() {
+    Alert.alert(`Déconnexion`, `Voulez-vous vraiment vous déconnecter ?`, [
+      {
+        text: 'Annuler',
+        style: 'cancel'
+      },
+      {
+        text: 'Déconnexion',
+        onPress() {
+          authStore.logout();
+        }
+      }
+    ]);
   }
 
   render() {

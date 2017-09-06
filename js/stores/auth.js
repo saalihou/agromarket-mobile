@@ -68,6 +68,23 @@ class AuthStore {
     }
   }
 
+  async logout() {
+    try {
+      this.loading = true;
+      this.currentUser = null;
+      this.token = null;
+      const logoutResponse = await api.post('/AGMUsers/logout');
+      if (!logoutResponse.ok) {
+        throw logoutResponse.data.error || logoutResponse.data;
+      }
+      return true;
+    } catch (e) {
+      throw e;
+    } finally {
+      this.loading = false;
+    }
+  }
+
   async verifyPhone(code: string): { verified: boolean } {
     try {
       const response = await api.post('/AGMUsers/verifyPhone', {

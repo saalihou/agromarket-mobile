@@ -55,7 +55,9 @@ class PublicationStore {
       throw response.data.error || response.data;
     }
     this.publishing = false;
-    return response.data;
+    const newPublication = response.data;
+    this.myPublications.unshift(newPublication);
+    return newPublication;
   }
 
   async getNextPublications() {

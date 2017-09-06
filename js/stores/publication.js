@@ -57,6 +57,7 @@ class PublicationStore {
     this.publishing = false;
     const newPublication = response.data;
     this.myPublications.unshift(newPublication);
+    this.publications.unshift(newPublication);
     return newPublication;
   }
 
@@ -68,7 +69,8 @@ class PublicationStore {
     const response = await api.get('/Publications', {
       filter: {
         limit: GET_PUBLICATIONS_LIMIT,
-        skip: this._currentPublicationIndex
+        skip: this._currentPublicationIndex,
+        order: 'createdDate DESC'
       }
     });
     if (!response.ok) {

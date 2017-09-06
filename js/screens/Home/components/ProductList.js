@@ -1,37 +1,30 @@
 import React, { PureComponent } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
 import ProductItem from './ProductItem.js';
 import CustomTextInput from '~components/CustomTextInput.js';
 
+import colors from '~theme/colors';
+
 export default class MyList extends React.PureComponent {
-  _renderItem = ({item}) => (
-    <ProductItem
-      item={item}
-      onOpen={this.props.onOpen}
-    />
-  );
+  _renderItem = ({ item }) =>
+    item === 'spinner' ? (
+      <ActivityIndicator
+        size="large"
+        color={colors.ACCENT}
+        style={{ marginTop: 10 }}
+      />
+    ) : (
+      <ProductItem item={item} onOpen={this.props.onOpen} />
+    );
 
   _keyExtractor = (item, index) => item.id;
 
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#CED0CE",
-        }}
-      />
-    );
-  };
-
-  
   render() {
-    const { data, ...props } = this.props;
+    const { data, loading, ...props } = this.props;
     return (
       <View>
         <FlatList
-          data={this.props.data}
+          data={this.props.data.concat(loading ? 'spinner' : [])}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
           {...props}
@@ -42,7 +35,5 @@ export default class MyList extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  separator: {
-
-  }
-})
+  separator: {}
+});

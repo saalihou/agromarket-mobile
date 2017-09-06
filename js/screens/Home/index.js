@@ -132,16 +132,12 @@ class HomeScreen extends Component {
             <View style={styles.productListContainer}>
               <ProductList
                 data={this.state.publications}
+                loading={publicationStore.fetching}
                 onOpen={this.onProductOpen.bind(this)}
                 onEndReachedThreshold={4}
                 onEndReached={() => publicationStore.getNextPublications()}
               />
             </View>
-            {publicationStore.fetching &&
-              !this.state.publications.length &&
-              <View style={styles.loaderContainer}>
-                <ActivityIndicator size={25} color={colors.PRIMARY} />
-              </View>}
           </View>
           <View style={{ backgroundColor: 'green' }}>
             <Text>page three</Text>

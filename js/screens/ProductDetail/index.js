@@ -4,7 +4,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { SharedElementTransition } from 'react-native-navigation';
 import ParallaxScrollView from 'react-native-parallax-scrollview';
 
-
 import colors from '~theme/colors';
 
 import screen from '~hoc/screen';
@@ -13,11 +12,12 @@ class ProductDetailScreen extends Component {
   componentWillMount() {}
 
   render() {
-    const { product } = this.props;
+    const { product, sharedElementPrefix } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SharedElementTransition
-          sharedElementId={`productImage${product.id}`}
+          sharedElementId={`${sharedElementPrefix ||
+            ''}productImage${product.id}`}
           showDuration={350}
           hideDuration={350}
           showInterpolation={{

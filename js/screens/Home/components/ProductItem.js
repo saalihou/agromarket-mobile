@@ -10,7 +10,7 @@ export default class ProductItem extends React.PureComponent {
   };
 
   render() {
-    const { item, onOpen } = this.props;
+    const { item, onOpen, sharedElementPrefix } = this.props;
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={() => onOpen(item)}>
         <View style={styles.container}>
@@ -41,7 +41,10 @@ export default class ProductItem extends React.PureComponent {
             </View>
           </View>
 
-          <SharedElementTransition sharedElementId={`productImage${item.id}`}>
+          <SharedElementTransition
+            sharedElementId={`${sharedElementPrefix ||
+              ''}productImage${item.id}`}
+          >
             <Image
               style={styles.picture}
               source={item.image || require('~assets/images/logo.png')}
@@ -68,9 +71,7 @@ export default class ProductItem extends React.PureComponent {
             <Icon name="add-shopping-cart" size={37} color="green" />
           </View>
           <View style={styles.description}>
-            <Text style={{ color: 'black' }}>
-              {item.description}
-            </Text>
+            <Text style={{ color: 'black' }}>{item.description}</Text>
           </View>
         </View>
       </TouchableOpacity>

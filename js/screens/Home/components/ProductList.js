@@ -14,7 +14,11 @@ export default class MyList extends React.PureComponent {
         style={{ marginTop: 10 }}
       />
     ) : (
-      <ProductItem item={item} onOpen={this.props.onOpen} />
+      <ProductItem
+        sharedElementPrefix={this.props.sharedElementPrefix}
+        item={item}
+        onOpen={this.props.onOpen}
+      />
     );
 
   _keyExtractor = (item, index) => item.id;
@@ -25,7 +29,7 @@ export default class MyList extends React.PureComponent {
       <View>
         <FlatList
           data={this.props.data.concat(loading ? 'spinner' : [])}
-          renderItem={this._renderItem}
+          renderItem={this._renderItem.bind(this)}
           keyExtractor={this._keyExtractor}
           {...props}
         />

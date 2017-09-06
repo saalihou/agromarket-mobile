@@ -1,5 +1,6 @@
 // @flow
 import { observable } from 'mobx';
+import { AsyncStorage } from 'react-native';
 
 import api from '~config/api';
 
@@ -33,6 +34,7 @@ class PublicationStore {
   @observable publishing: boolean;
   @observable fetching: boolean;
   @observable publications: Array<Publication> = [];
+  @observable myPublications: Array<Publication> = [];
 
   _currentPublicationIndex = 0;
   _lastPublicationReached = false;
@@ -77,6 +79,35 @@ class PublicationStore {
     if (response.data.length < GET_PUBLICATIONS_LIMIT) {
       this._lastPublicationReached = true;
     }
+  }
+
+  async getMyPublications() {
+    try {
+      this.loading = true;
+      const userId = await AsyncStorage.getItem('currentUserId');
+      if (!userId) {
+        return;
+      }
+      const myPubsResponse = await api.get('/Publications', {
+        filter: {
+          where: {
+            userId
+          }
+        }
+      });
+      if (!myPubsResponse.ok) {
+        throw myPubsResponse.data.error || myPubsResponse.data;
+      }
+      this.myPublications = myPubsResponse.data;
+    } catch (e) {
+      throw e;
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  clearMyPublications() {
+    this.myPublications = [];
   }
 }
 

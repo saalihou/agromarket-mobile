@@ -23,11 +23,14 @@ import screen from '~hoc/screen';
 import publicationStore from '~stores/publication';
 import authStore from '~stores/auth';
 
+import AllPublications from './screens/AllPublications';
+import MyPublications from './screens/MyPublications';
+
 @observer
 class HomeScreen extends Component {
   state = {
     visible: true,
-    publications: []
+    myPublications: []
   };
 
   displayFab(icon, id) {
@@ -95,16 +98,6 @@ class HomeScreen extends Component {
         });
       }
     });
-
-    publicationStore.getNextPublications();
-    autorun(() => {
-      this.setState({
-        publications: publicationStore.publications.map(p => ({
-          ...p,
-          image: p.pictures ? { uri: p.pictures[0] } : undefined
-        }))
-      });
-    });
   }
 
   onNavigatorEvent(event) {
@@ -114,19 +107,22 @@ class HomeScreen extends Component {
     }
     if (event.type === 'NavBarButtonPress') {
       if (event.id === 'login') {
-        navigator.push({
+        this.navigate({
           screen: 'Login'
         });
-        this.onNavigate();
       } else if (event.id === 'logout') {
         this.logout();
       } else if (event.id === 'add') {
-        navigator.push({
+        this.navigate({
           screen: 'ProductForm'
         });
-        this.onNavigate();
       }
     }
+  }
+
+  navigate(...args) {
+    this.props.navigator.push(...args);
+    this.onNavigate();
   }
 
   onNavigate() {
@@ -141,16 +137,6 @@ class HomeScreen extends Component {
     } else {
       this.removeFab();
     }
-  }
-
-  onProductOpen(product) {
-    this.props.navigator.push({
-      screen: 'ProductDetail',
-      title: product.label,
-      passProps: { product },
-      sharedElements: [`productImage${product.id}`]
-    });
-    this.onNavigate();
   }
 
   logout() {
@@ -177,19 +163,11 @@ class HomeScreen extends Component {
           indicator={this._renderTitleIndicator()}
           onPageSelected={this.onPageSelected.bind(this)}
         >
-          <View style={styles.home}>
-            <View style={styles.productListContainer}>
-              <ProductList
-                data={this.state.publications}
-                loading={publicationStore.fetching}
-                onOpen={this.onProductOpen.bind(this)}
-                onEndReachedThreshold={4}
-                onEndReached={() => publicationStore.getNextPublications()}
-              />
-            </View>
+          <View style={styles.tab}>
+            <AllPublications navigate={this.navigate.bind(this)} />
           </View>
-          <View style={{ backgroundColor: 'green' }}>
-            <Text>page three</Text>
+          <View style={styles.tab}>
+            <MyPublications navigate={this.navigate.bind(this)} />
           </View>
           <View style={{ backgroundColor: 'yellow' }}>
             <Text>page three</Text>
@@ -231,7 +209,7 @@ const styles = StyleSheet.create({
     flex: 1,
     elevation: 5
   },
-  home: {
+  tab: {
     flex: 1,
     backgroundColor: '#ecf0f1'
   },

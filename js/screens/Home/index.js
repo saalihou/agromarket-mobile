@@ -23,6 +23,8 @@ import screen from '~hoc/screen';
 import publicationStore from '~stores/publication';
 import authStore from '~stores/auth';
 
+import InfoSign from '~components/InfoSign';
+
 import AllPublications from './screens/AllPublications';
 import MyPublications from './screens/MyPublications';
 
@@ -169,8 +171,8 @@ class HomeScreen extends Component {
           <View style={styles.tab}>
             <MyPublications navigate={this.navigate.bind(this)} />
           </View>
-          <View style={{ backgroundColor: 'yellow' }}>
-            <Text>page three</Text>
+          <View style={styles.tab}>
+            <InfoSign icon='person' message='En développement, revenez bientôt.' />
           </View>
         </IndicatorViewPager>
       </View>

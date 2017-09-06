@@ -178,7 +178,7 @@ class HomeScreen extends Component {
           </View>
           <View style={styles.tab}>
             <InfoSign
-              icon="person"
+              icon="build"
               message="En développement, revenez bientôt."
             />
           </View>

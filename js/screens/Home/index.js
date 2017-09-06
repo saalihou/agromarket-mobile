@@ -14,6 +14,7 @@ import colors from '~theme/colors';
 import screen from '~hoc/screen';
 
 import publicationStore from '~stores/publication';
+import authStore from '~stores/auth';
 
 @observer
 class HomeScreen extends Component {
@@ -47,25 +48,45 @@ class HomeScreen extends Component {
     });
     navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.displayFab('shopping-cart', 'cart');
-    const source = await MaterialIcon.getImageSource(
+    const loginButtonIcon = await MaterialIcon.getImageSource(
       'person-add',
       30,
       colors.PRIMARY
     );
-    navigator.setButtons({
-      rightButtons: [
-        {
-          title: 'Connexion',
-          id: 'login',
-          icon: source
-        }
-      ]
+
+    const logoutButtonIcon = await MaterialIcon.getImageSource(
+      'exit-to-app',
+      30,
+      colors.PRIMARY
+    );
+
+    autorun(async () => {
+      if (authStore.currentUser) {
+        navigator.setButtons({
+          rightButtons: [
+            {
+              title: 'Déconnexion',
+              id: 'logout',
+              icon: logoutButtonIcon
+            }
+          ]
+        });
+      } else {
+        navigator.setButtons({
+          rightButtons: [
+            {
+              title: 'Connexion',
+              id: 'login',
+              icon: loginButtonIcon
+            }
+          ]
+        });
+      }
     });
 
     publicationStore.getNextPublications();
 
     autorun(() => {
-      console.log(publicationStore.publications);
       this.setState({
         publications: publicationStore.publications.map(p => ({
           ...p,
@@ -83,7 +104,7 @@ class HomeScreen extends Component {
     if (event.type === 'NavBarButtonPress') {
       if (event.id === 'login') {
         navigator.push({
-          screen: 'Subscribe'
+          screen: 'Login'
         });
         this.onNavigate();
       } else if (event.id === 'add') {

@@ -49,6 +49,8 @@ class HomeScreen extends Component {
   }
 
   async componentWillMount() {
+    authStore.restoreSession();
+
     const { navigator } = this.props;
     navigator.setTitle({
       title: 'AgroMarket'

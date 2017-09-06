@@ -1,6 +1,7 @@
 // @flow
 import { observable } from 'mobx';
 import assign from 'lodash/assign';
+import { AsyncStorage } from 'react-native';
 
 import api from '~config/api';
 
@@ -60,6 +61,10 @@ class AuthStore {
         throw userResponse.data.error || userResponse.data;
       }
       this.currentUser = userResponse.data;
+      await AsyncStorage.setItem(
+        'session',
+        JSON.stringify({ currentUser: this.currentUser, token: this.token })
+      );
       return this.currentUser;
     } catch (e) {
       throw e;
@@ -77,11 +82,27 @@ class AuthStore {
       if (!logoutResponse.ok) {
         throw logoutResponse.data.error || logoutResponse.data;
       }
+      await AsyncStorage.removeItem('session');
       return true;
     } catch (e) {
       throw e;
     } finally {
       this.loading = false;
+    }
+  }
+
+  async restoreSession() {
+    try {
+      const session = await AsyncStorage.getItem('session');
+      if (!session) {
+        console.log('No session to restore');
+        return;
+      }
+      const sessionObject = JSON.parse(session);
+      this.currentUser = sessionObject.currentUser;
+      this.token = sessionObject.token;
+    } catch (e) {
+      console.log('Session restore failed', e);
     }
   }
 

@@ -58,7 +58,8 @@ class LoginScreen extends Component {
                 key: 'phoneNumber',
                 placeholder: 'Numéro de téléphone',
                 icon: 'phone',
-                keyboardType: 'phone-pad'
+                keyboardType: 'phone-pad',
+                autoFocus: true
               },
               {
                 key: 'password',

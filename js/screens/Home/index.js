@@ -118,6 +118,11 @@ class HomeScreen extends Component {
         this.navigate({
           screen: 'ProductForm'
         });
+      } else if (event.id === 'cart') {
+        Alert.alert(
+          `En développement`,
+          `Cette fonctionnalité est en développement. Revenez bientôt.`
+        );
       }
     }
   }
@@ -172,7 +177,10 @@ class HomeScreen extends Component {
             <MyPublications navigate={this.navigate.bind(this)} />
           </View>
           <View style={styles.tab}>
-            <InfoSign icon='person' message='En développement, revenez bientôt.' />
+            <InfoSign
+              icon="person"
+              message="En développement, revenez bientôt."
+            />
           </View>
         </IndicatorViewPager>
       </View>

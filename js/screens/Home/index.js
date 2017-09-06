@@ -5,7 +5,8 @@ import {
   View,
   Image,
   ActivityIndicator,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
 import ProductList from '~screens/Home/components/ProductList.js';
@@ -32,7 +33,8 @@ import MyPublications from './screens/MyPublications';
 class HomeScreen extends Component {
   state = {
     visible: true,
-    myPublications: []
+    myPublications: [],
+    width: Dimensions.get('window').width
   };
 
   displayFab(icon, id) {
@@ -105,7 +107,7 @@ class HomeScreen extends Component {
   onNavigatorEvent(event) {
     const { navigator } = this.props;
     if (event.id === 'willAppear') {
-      this.setState({ visible: true });
+      setTimeout(() => this.setState({ visible: true }), 350);
     }
     if (event.type === 'NavBarButtonPress') {
       if (event.id === 'login') {
@@ -166,7 +168,10 @@ class HomeScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <IndicatorViewPager
-          style={[styles.viewPager, { flex: visible ? 1 : 0 }]}
+          style={[
+            styles.viewPager,
+            { width: visible ? this.state.width : this.state.width + 1 }
+          ]}
           indicator={this._renderTitleIndicator()}
           onPageSelected={this.onPageSelected.bind(this)}
         >

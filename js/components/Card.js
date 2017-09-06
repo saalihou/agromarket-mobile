@@ -8,7 +8,7 @@ import colors from '~theme/colors';
 export default class Card extends Component {
 
   render() {
-    const { animation } = this.props;
+    const { animation, style } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -17,7 +17,7 @@ export default class Card extends Component {
             source={require('~assets/images/logo.png')}
           />
         </View>
-        <View style={styles.card}>
+        <View style={[styles.card, style]}>
           {this.props.children}
         </View>
       </View>

@@ -82,16 +82,17 @@ export default class FormSection extends Component {
   }
 
   render() {
-    const { inputs } = this.props;
+    const { inputs, style, submitLabel, loading } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, style]}>
         <View style={{ paddingBottom: 40 }}>
           {inputs.map(this.renderInput.bind(this))}
         </View>
         <Button
-          title="Suivant"
+          title={submitLabel || 'Suivant'}
           color={colors.PRIMARY}
           onPress={this.submit.bind(this)}
+          disabled={loading}
         />
       </View>
     );
@@ -103,4 +104,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between'
   }
-})
+});

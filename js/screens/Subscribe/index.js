@@ -95,6 +95,7 @@ class SubscribeScreen extends Component {
       if (!this.validate(address, addressValidator)) return;
       await authStore.updatePendingProfile({ address });
       Alert.alert(`Félicitations`, `Bienvenue à bord!`);
+      this.props.navigator.pop();
     } catch (e) {
       Alert.alert(`Erreur`, `Erreur lors de la mise à jour. ${e.message}`);
     }

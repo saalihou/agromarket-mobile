@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
-import ProductItem from './ProductItem.js';
+import ProductCard from './ProductCard.js';
 import CustomTextInput from '~components/CustomTextInput.js';
 
 import colors from '~theme/colors';
 
-export default class MyList extends React.PureComponent {
+export default class ProductList extends React.PureComponent {
   _renderItem = ({ item }) =>
     item === 'spinner' ? (
       <ActivityIndicator
@@ -14,7 +14,7 @@ export default class MyList extends React.PureComponent {
         style={{ marginTop: 10 }}
       />
     ) : (
-      <ProductItem
+      <ProductCard
         sharedElementPrefix={this.props.sharedElementPrefix}
         item={item}
         onOpen={this.props.onOpen}

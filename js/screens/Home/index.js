@@ -9,7 +9,6 @@ import {
   Dimensions
 } from 'react-native';
 import { PagerTitleIndicator, IndicatorViewPager } from 'rn-viewpager';
-import ProductList from '~screens/Home/components/ProductList.js';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';

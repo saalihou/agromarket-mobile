@@ -1,8 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 
 import InfoSign from '~components/InfoSign';
-import ProductList from '~screens/Home/components/ProductList';
+import ProductList from '~components/ProductList';
 
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
@@ -55,9 +56,7 @@ class AllPublicationsScreen extends Component {
     if (!authStore.currentUser) {
       return (
         <InfoSign
-          message="Connectez-vous pour voir vos publications"
-          icon="person-add"
-          onPress={this.goToLogin.bind(this)}
+          
         />
       );
     }

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import { SharedElementTransition } from 'react-native-navigation';
 
-export default class ProductItem extends React.PureComponent {
+export default class ProductCard extends React.PureComponent {
   static defaultProps = {
     onOpen: () => undefined
   };

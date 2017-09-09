@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import ProductList from '~screens/Home/components/ProductList';
 
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
+
+import ProductList from '~components/ProductList';
 
 import publicationStore from '~stores/publication';
 

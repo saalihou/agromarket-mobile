@@ -13,7 +13,9 @@ const LOADER_ITEM = { id: 'loader_id' };
 export default class ProductList extends React.PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(ProductCard.propTypes.item),
+    removingItem: PropTypes.string,
     onOpen: ProductCard.propTypes.onOpen,
+    onRemove: ProductCard.propTypes.onRemove,
     sharedElementPrefix: ProductCard.propTypes.sharedElementPrefix
   };
 
@@ -29,6 +31,8 @@ export default class ProductList extends React.PureComponent {
         sharedElementPrefix={this.props.sharedElementPrefix}
         item={item}
         onOpen={this.props.onOpen}
+        onRemove={this.props.onRemove}
+        removing={this.props.removingItem === item.id}
       />
     );
 

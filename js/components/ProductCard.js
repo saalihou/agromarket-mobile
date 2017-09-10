@@ -1,5 +1,12 @@
 import React, { PureComponent } from 'react';
-import { TouchableOpacity, Text, Image, View, StyleSheet } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import { SharedElementTransition } from 'react-native-navigation';
@@ -9,16 +16,20 @@ import PropTypes from 'prop-types';
 export default class ProductCard extends React.PureComponent {
   static propTypes = {
     item: PropTypes.object,
+    removing: PropTypes.bool,
     onOpen: PropTypes.func,
+    onRemove: PropTypes.func,
     sharedElementPrefix: PropTypes.string
   };
 
   static defaultProps = {
-    onOpen: () => undefined
+    onOpen: () => undefined,
+    onRemove: () => undefined
   };
 
   render() {
-    const { item, onOpen, sharedElementPrefix } = this.props;
+    const { item, removing, onOpen, sharedElementPrefix } = this.props;
+
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={() => onOpen(item)}>
         <View style={styles.container}>
@@ -75,7 +86,15 @@ export default class ProductCard extends React.PureComponent {
             </Text>
           </View>
           <View style={styles.footer}>
-            <Icon name="favorite-border" size={37} color="#e67e22" />
+            {!item.isMine ? (
+              <Icon name="favorite-border" size={37} color="#e67e22" />
+            ) : removing ? (
+              <ActivityIndicator color="#e67e22" size={37} />
+            ) : (
+              <TouchableOpacity onPress={() => this.props.onRemove(item)}>
+                <Icon name="delete" size={37} color="#e67e22" />
+              </TouchableOpacity>
+            )}
             <Icon name="add-shopping-cart" size={37} color="green" />
           </View>
           <View style={styles.description}>

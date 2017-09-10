@@ -35,6 +35,7 @@ class PublicationStore {
   @observable fetching: boolean;
   @observable publications: Array<Publication> = [];
   @observable myPublications: Array<Publication> = [];
+  @observable removingItem: string = null;
 
   _currentPublicationIndex = 0;
   _lastPublicationReached = false;
@@ -59,6 +60,20 @@ class PublicationStore {
     this.myPublications.unshift(newPublication);
     this.publications.unshift(newPublication);
     return newPublication;
+  }
+
+  async remove(publicationId: string): Promise {
+    this.removingItem = publicationId;
+    const response = await api.delete(`/Publications/${publicationId}`);
+    if (!response.ok) {
+      this.removingItem = null;
+      throw response.data.error || response.data;
+    }
+    this.removingItem = null;
+    this.publications = this.publications.filter(p => p.id !== publicationId);
+    this.myPublications = this.myPublications.filter(
+      p => p.id !== publicationId
+    );
   }
 
   async getNextPublications() {

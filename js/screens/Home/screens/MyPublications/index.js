@@ -58,6 +58,7 @@ class AllPublicationsScreen extends Component {
         <InfoSign
           message='Connectez-vous pour voir vos publications'
           icon='person-add'
+          onPress={this.goToLogin.bind(this)}
         />
       );
     }

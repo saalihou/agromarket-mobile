@@ -8,6 +8,8 @@ import CustomTextInput from '~components/CustomTextInput.js';
 
 import colors from '~theme/colors';
 
+const LOADER_ITEM = { id: 'loader_id' };
+
 export default class ProductList extends React.PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(ProductCard.propTypes.item),
@@ -16,7 +18,7 @@ export default class ProductList extends React.PureComponent {
   };
 
   _renderItem = ({ item }) =>
-    item === 'spinner' ? (
+    item === LOADER_ITEM ? (
       <ActivityIndicator
         size="large"
         color={colors.ACCENT}
@@ -37,7 +39,7 @@ export default class ProductList extends React.PureComponent {
     return (
       <View>
         <FlatList
-          data={this.props.data.concat(loading ? 'spinner' : [])}
+          data={this.props.data.concat(loading ? LOADER_ITEM : [])}
           renderItem={this._renderItem.bind(this)}
           keyExtractor={this._keyExtractor}
           {...props}

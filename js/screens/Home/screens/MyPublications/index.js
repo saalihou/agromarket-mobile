@@ -56,7 +56,8 @@ class AllPublicationsScreen extends Component {
     if (!authStore.currentUser) {
       return (
         <InfoSign
-          
+          message='Connectez-vous pour voir vos publications'
+          icon='person-add'
         />
       );
     }

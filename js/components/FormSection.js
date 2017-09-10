@@ -14,6 +14,8 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import validate from 'validate.js';
 import set from 'lodash/set';
 
+import PropTypes from 'prop-types';
+
 import CustomTextInput from '~components/CustomTextInput';
 import CustomPicker from '~components/CustomPicker';
 import Card from '~components/Card';
@@ -21,6 +23,15 @@ import Card from '~components/Card';
 import colors from '~theme/colors';
 
 export default class FormSection extends Component {
+  static propTypes = {
+    validator: PropTypes.object,
+    onSubmit: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
+    submitLabel: PropTypes.string,
+    style: View.propTypes.style,
+    inputs: PropTypes.arrayOf(PropTypes.object)
+  };
+
   state = {
     values: {}
   };

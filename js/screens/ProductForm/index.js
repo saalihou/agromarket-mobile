@@ -168,7 +168,8 @@ class ProductFormScreen extends Component {
                     multiline: true,
                     numberOfLines: 5,
                     placeholder: 'Description',
-                    icon: 'description'
+                    icon: 'description',
+                    autoCapitalize: 'sentences'
                   }
                 ]}
                 validator={genInfosValidator}

@@ -4,20 +4,22 @@ import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
 import ProductCard from './ProductCard.js';
-import CustomTextInput from '~components/CustomTextInput.js';
+import CustomTextInput from './CustomTextInput.js';
 
-import colors from '~theme/colors';
+import colors from '../theme/colors';
 
 const LOADER_ITEM = { id: 'loader_id' };
 
+export type ProductListProps = {
+  items: Array<object>,
+  removingItem: string,
+  onOpen: (item: object) => undefined,
+  onRemove: (item: object) => undefined,
+  sharedElementPrefix: string
+};
+
 export default class ProductList extends React.PureComponent {
-  static propTypes = {
-    items: PropTypes.arrayOf(ProductCard.propTypes.item),
-    removingItem: PropTypes.string,
-    onOpen: ProductCard.propTypes.onOpen,
-    onRemove: ProductCard.propTypes.onRemove,
-    sharedElementPrefix: ProductCard.propTypes.sharedElementPrefix
-  };
+  props: ProductListProps;
 
   _renderItem = ({ item }) =>
     item === LOADER_ITEM ? (

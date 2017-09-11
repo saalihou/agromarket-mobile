@@ -3,7 +3,7 @@ import { observable } from 'mobx';
 import assign from 'lodash/assign';
 import { AsyncStorage } from 'react-native';
 
-import api from '~config/api';
+import api from '../config/api';
 
 type AuthParams = {
   phoneNumber: string,

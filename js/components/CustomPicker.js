@@ -4,8 +4,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import PropTypes from 'prop-types';
 
+type PickerItem = {
+  label: string,
+  value: any
+};
+
+export type CustomPickerProps = {
+  items: Array<PickerItem>,
+  style: object
+};
+
 export default class CustomPicker extends Component {
-  static propTypes = Picker.propTypes;
+  props: CustomPickerProps;
 
   static defaultProps = {
     items: []

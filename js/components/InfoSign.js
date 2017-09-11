@@ -4,14 +4,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import PropTypes from 'prop-types';
 
-import colors from '~theme/colors';
+import colors from '../theme/colors';
+
+export type InfoSignProps = {
+  message: string,
+  icon: string,
+  onPress: () => undefined
+};
 
 class InfoSign extends Component {
-  static propTypes = {
-    message: PropTypes.string.isRequired,
-    icon: Icon.propTypes.name,
-    onPress: PropTypes.func
-  }
+  props: InfoSignProps;
 
   render() {
     const { icon, message, onPress, ...props } = this.props;

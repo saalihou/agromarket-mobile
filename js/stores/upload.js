@@ -5,7 +5,7 @@ import { RNS3 } from 'react-native-aws3';
 import Chance from 'chance';
 import Promise from 'bluebird';
 
-import api from '~config/api';
+import api from '../config/api';
 
 const uploadOptions = {
   keyPrefix: 'images/',

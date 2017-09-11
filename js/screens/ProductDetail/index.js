@@ -4,9 +4,9 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { SharedElementTransition } from 'react-native-navigation';
 import ParallaxScrollView from 'react-native-parallax-scrollview';
 
-import colors from '~theme/colors';
+import colors from '../../theme/colors';
 
-import screen from '~hoc/screen';
+import screen from '../../hoc/screen';
 
 class ProductDetailScreen extends Component {
   componentWillMount() {}

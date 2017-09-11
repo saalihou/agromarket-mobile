@@ -16,14 +16,14 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
-import colors from '~theme/colors';
+import colors from '../../theme/colors';
 
-import screen from '~hoc/screen';
+import screen from '../../hoc/screen';
 
-import publicationStore from '~stores/publication';
-import authStore from '~stores/auth';
+import publicationStore from '../../stores/publication';
+import authStore from '../../stores/auth';
 
-import InfoSign from '~components/InfoSign';
+import InfoSign from '../../components/InfoSign';
 
 import AllPublications from './screens/AllPublications';
 import MyPublications from './screens/MyPublications';

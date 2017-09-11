@@ -16,14 +16,14 @@ import PersoInfosForm from './PersoInfosForm.js';
 import CheckCodeForm from './CheckCodeForm.js';
 import AddressForm from './AddressForm.js';
 
-import authStore from '~stores/auth';
-import Card from '~components/Card';
+import authStore from '../../stores/auth';
+import Card from '../../components/Card';
 import authValidator from './validations/auth';
 import codeValidator from './validations/code';
 import persoInfosValidator from './validations/persoInfos';
 import addressValidator from './validations/address';
 
-import screen from '~hoc/screen';
+import screen from '../../hoc/screen';
 
 @observer
 class SubscribeScreen extends Component {

@@ -4,13 +4,15 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import Animation from 'lottie-react-native';
 import PropTypes from 'prop-types';
 
-import colors from '~theme/colors';
+import colors from '../theme/colors';
+
+export type CardProps = {
+  style: object,
+  children: React.Element<*>
+};
 
 export default class Card extends Component {
-  static propTypes = {
-    style: View.propTypes.style,
-    children: PropTypes.node.isRequired
-  };
+  props: CardProps;
 
   render() {
     const { style } = this.props;

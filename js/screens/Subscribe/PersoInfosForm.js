@@ -3,9 +3,9 @@ import { Text, View, TextInput, Image, Button } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import set from 'lodash/set';
 
-import Card from '~components/Card';
-import CustomTextInput from '~components/CustomTextInput.js'
-import colors from '~theme/colors';
+import Card from '../../components/Card';
+import CustomTextInput from '../../components/CustomTextInput.js'
+import colors from '../../theme/colors';
 
 export default class PersoInfosForm extends Component {
   state = {

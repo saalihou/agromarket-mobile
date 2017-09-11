@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, View } from 'react-native';
-import colors from '~theme/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import PropTypes from 'prop-types';
 
+import colors from '../theme/colors';
+
+export type CustomTextInputProps = {};
+
 export default class CustomTextInput extends Component {
-  static propTypes = TextInput.propTypes;
+  props: CustomTextInputProps;
 
   render() {
     return (

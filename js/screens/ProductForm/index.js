@@ -18,15 +18,15 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { observer } from 'mobx-react';
 import chunk from 'lodash/chunk';
 
-import screen from '~hoc/screen';
-import colors from '~theme/colors';
+import screen from '../../hoc/screen';
+import colors from '../../theme/colors';
 
-import Card from '~components/Card';
-import FormSection from '~components/FormSection';
+import Card from '../../components/Card';
+import FormSection from '../../components/FormSection';
 
-import publicationStore from '~stores/publication';
-import uploadStore from '~stores/upload';
-import authStore from '~stores/auth';
+import publicationStore from '../../stores/publication';
+import uploadStore from '../../stores/upload';
+import authStore from '../../stores/auth';
 
 import genInfosValidator from './validators/genInfos';
 import typePriceValidator from './validators/typePrice';

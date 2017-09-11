@@ -2,7 +2,7 @@
 import { observable } from 'mobx';
 import { AsyncStorage } from 'react-native';
 
-import api from '~config/api';
+import api from '../config/api';
 
 type ProductType = {
   id: string,

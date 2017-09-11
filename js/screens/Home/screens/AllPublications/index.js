@@ -4,9 +4,9 @@ import { StyleSheet } from 'react-native';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
-import ProductList from '~components/ProductList';
+import ProductList from '../../../../components/ProductList';
 
-import publicationStore from '~stores/publication';
+import publicationStore from '../../../../stores/publication';
 
 @observer
 class AllPublicationsScreen extends Component {

@@ -2,16 +2,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, ToastAndroid } from 'react-native';
 
-import InfoSign from '~components/InfoSign';
-import ProductList from '~components/ProductList';
+import InfoSign from '../../../../components/InfoSign';
+import ProductList from '../../../../components/ProductList';
 
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
-import publicationStore from '~stores/publication';
-import authStore from '~stores/auth';
+import publicationStore from '../../../../stores/publication';
+import authStore from '../../../../stores/auth';
 
-import confirm from '~utils/confirm';
+import confirm from '../../../../utils/confirm';
 
 @observer
 class AllPublicationsScreen extends Component {

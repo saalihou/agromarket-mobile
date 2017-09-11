@@ -13,14 +13,16 @@ import { SharedElementTransition } from 'react-native-navigation';
 
 import PropTypes from 'prop-types';
 
+export type ProductCardProps = {
+  item: object,
+  removing: boolean,
+  onOpen: (item: object) => undefined,
+  onRemove: (itemId: string) => undefined,
+  sharedElementPrefix: string
+};
+
 export default class ProductCard extends React.PureComponent {
-  static propTypes = {
-    item: PropTypes.object,
-    removing: PropTypes.bool,
-    onOpen: PropTypes.func,
-    onRemove: PropTypes.func,
-    sharedElementPrefix: PropTypes.string
-  };
+  props: ProductCardProps;
 
   static defaultProps = {
     onOpen: () => undefined,

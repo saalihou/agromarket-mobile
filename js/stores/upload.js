@@ -19,13 +19,13 @@ class UploadStore {
   @observable progresses = new Map();
   @observable jobs = {};
 
-  async selectImagesAndUpload() {
+  async selectImagesAndUpload(existingJobId: string): Promise {
     const chance = new Chance();
     const images = await ImagePicker.openPicker({
       multiple: true
     });
-    const jobId = chance.guid();
-    this.jobs[jobId] = [];
+    const jobId = existingJobId || chance.guid();
+    this.jobs[jobId] = this.jobs[jobId] || [];
     return [
       jobId,
       Promise.map(images, async image => {

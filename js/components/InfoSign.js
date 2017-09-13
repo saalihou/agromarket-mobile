@@ -15,6 +15,7 @@ export type InfoSignProps = {
 class InfoSign extends Component {
   props: InfoSignProps;
 
+  /** @private */
   render() {
     const { icon, message, onPress, ...props } = this.props;
     return (

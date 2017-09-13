@@ -10,14 +10,14 @@ You can also find under it various utilities and theming files.
 
 ## Documentation
 
-[Stores Documentation](./stores/API.md)
+[Stores Documentation](./js/stores/API.md)
 
-[Components Documentation](./components/API.md)
+[Components Documentation](./js/components/API.md)
 
 ## Collaborate
 
 We use [yarn](https://yarnpkg.com/) for dependency management.
 
-Don't forget to document and write unit tests for your code with [Jest](https://facebook.github.io/jest/)
+Don't forget to document your code with [flow](https://flow.org/) and [jsdoc](http://usejsdoc.org/) and write unit tests for your code with [Jest](https://facebook.github.io/jest/)
 If you want to update the docs, just run `yarn docs`.
 You can find doc configuration under each folder's `documentation.yml` file.

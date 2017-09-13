@@ -29,6 +29,7 @@ export default class ProductCard extends React.PureComponent {
     onRemove: () => undefined
   };
 
+  /** @private */
   render() {
     const { item, removing, onOpen, sharedElementPrefix } = this.props;
 

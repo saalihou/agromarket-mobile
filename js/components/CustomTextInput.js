@@ -11,6 +11,7 @@ export type CustomTextInputProps = {};
 export default class CustomTextInput extends Component {
   props: CustomTextInputProps;
 
+  /** @private */
   render() {
     return (
       <View style={styles.container}>

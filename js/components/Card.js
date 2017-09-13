@@ -14,6 +14,7 @@ export type CardProps = {
 export default class Card extends Component {
   props: CardProps;
 
+  /** @private */
   render() {
     const { style } = this.props;
     return (

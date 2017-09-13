@@ -1,0 +1,7 @@
+toc:
+  - name: Stores
+    description: MobX stores that encapsulate the business logic
+    children:
+      - UploadStore
+      - PublicationStore
+      - AuthStore

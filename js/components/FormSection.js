@@ -34,6 +34,7 @@ export type FormSectionProps = {
 export default class FormSection extends Component {
   props: FormSectionProps;
 
+  /** @private */
   state = {
     values: {}
   };
@@ -42,6 +43,7 @@ export default class FormSection extends Component {
     onSubmit: () => undefined
   };
 
+  /** @private */
   makeChangeHandler(key) {
     return val => {
       const { values } = this.state;
@@ -50,6 +52,7 @@ export default class FormSection extends Component {
     };
   }
 
+  /** @private */
   submit() {
     const { validator } = this.props;
     const { values } = this.state;
@@ -65,6 +68,7 @@ export default class FormSection extends Component {
     this.props.onSubmit(values);
   }
 
+  /** @private */
   renderTextInput(input) {
     return (
       <CustomTextInput
@@ -75,6 +79,7 @@ export default class FormSection extends Component {
     );
   }
 
+  /** @private */
   renderPicker(input) {
     return (
       <CustomPicker
@@ -86,6 +91,7 @@ export default class FormSection extends Component {
     );
   }
 
+  /** @private */
   renderInput(input) {
     if (input.type === 'picker') {
       return this.renderPicker(input);
@@ -94,6 +100,7 @@ export default class FormSection extends Component {
     }
   }
 
+  /** @private */
   render() {
     const { inputs, style, submitLabel, loading } = this.props;
     return (

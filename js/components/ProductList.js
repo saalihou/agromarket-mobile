@@ -21,6 +21,7 @@ export type ProductListProps = {
 export default class ProductList extends React.PureComponent {
   props: ProductListProps;
 
+  /** @private */
   _renderItem = ({ item }) =>
     item === LOADER_ITEM ? (
       <ActivityIndicator
@@ -38,8 +39,10 @@ export default class ProductList extends React.PureComponent {
       />
     );
 
+  /** @private */
   _keyExtractor = (item, index) => item.id;
-
+  
+  /** @private */
   render() {
     const { data, loading, ...props } = this.props;
     return (

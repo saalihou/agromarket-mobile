@@ -3,9 +3,9 @@ import { Text, View, ActivityIndicator, TextInput, Image, Button } from 'react-n
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import CustomTextInput from '~components/CustomTextInput.js';
 
-import Card from '~components/Card';
+import Card from '../../components/Card';
 
-import colors from '~theme/colors';
+import colors from '../../theme/colors';
 
 export default class AuthForm extends Component {
   state = {

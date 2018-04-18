@@ -3,10 +3,10 @@ import { Text, View, TextInput, Image, Button } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import set from 'lodash/set';
 
-import Card from '~components/Card';
-import CustomTextInput from '~components/CustomTextInput.js';
+import Card from '../../components/Card';
+import CustomTextInput from '../../components/CustomTextInput.js';
 
-import colors from '~theme/colors';
+import colors from '../../theme/colors';
 
 export default class AddressForm extends Component {
   state = {

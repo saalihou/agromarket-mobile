@@ -2,10 +2,26 @@ import React, { Component } from 'react';
 import { Picker, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import PropTypes from 'prop-types';
+
+export type PickerItem = {
+  label: string,
+  value: any
+};
+
+export type CustomPickerProps = {
+  items: Array<PickerItem>,
+  style: object
+};
+
 export default class CustomPicker extends Component {
+  props: CustomPickerProps;
+
   static defaultProps = {
     items: []
   };
+  
+  /** @private */
   render() {
     const { items } = this.props;
     return (
@@ -18,13 +34,13 @@ export default class CustomPicker extends Component {
           {...this.props}
           style={[styles.picker, this.props.style]}
         >
-          {items.map(item =>
+          {items.map(item => (
             <Picker.Item
               label={item.label}
               value={item.value}
               key={item.value}
             />
-          )}
+          ))}
         </Picker>
       </View>
     );

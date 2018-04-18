@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, Image, Button } from 'react-native';
 import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import Animation from 'lottie-react-native';
+import PropTypes from 'prop-types';
 
-import colors from '~theme/colors';
+import colors from '../theme/colors';
+
+export type CardProps = {
+  style: object,
+  children: React.Element<*>
+};
 
 export default class Card extends Component {
+  props: CardProps;
 
+  /** @private */
   render() {
-    const { animation, style } = this.props;
+    const { style } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -17,9 +25,7 @@ export default class Card extends Component {
             source={require('~assets/images/logo.png')}
           />
         </View>
-        <View style={[styles.card, style]}>
-          {this.props.children}
-        </View>
+        <View style={[styles.card, style]}>{this.props.children}</View>
       </View>
     );
   }
@@ -29,7 +35,7 @@ const styles = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   card: {
     flex: 1,
@@ -62,7 +68,10 @@ const styles = {
   },
   background: {
     position: 'absolute',
-    top: 0, left: 0, right: 0, bottom:0,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     opacity: 0.8,
     backgroundColor: '#ecf0f1',
     zIndex: -1

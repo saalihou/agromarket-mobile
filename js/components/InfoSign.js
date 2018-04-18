@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import colors from '~theme/colors';
+
+import PropTypes from 'prop-types';
+
+import colors from '../theme/colors';
 
 export type InfoSignProps = {
   message: string,
@@ -12,6 +15,7 @@ export type InfoSignProps = {
 class InfoSign extends Component {
   props: InfoSignProps;
 
+  /** @private */
   render() {
     const { icon, message, onPress, ...props } = this.props;
     return (

@@ -14,13 +14,27 @@ import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 import validate from 'validate.js';
 import set from 'lodash/set';
 
-import CustomTextInput from '~components/CustomTextInput';
-import CustomPicker from '~components/CustomPicker';
-import Card from '~components/Card';
+import PropTypes from 'prop-types';
 
-import colors from '~theme/colors';
+import CustomTextInput from './CustomTextInput';
+import CustomPicker from './CustomPicker';
+import Card from './Card';
+
+import colors from '../theme/colors';
+
+export type FormSectionProps = {
+  validator?: object,
+  onSubmit: (values: object) => undefined,
+  loading?: boolean,
+  submitLabel?: string,
+  style?: object,
+  inputs: Array<object>
+};
 
 export default class FormSection extends Component {
+  props: FormSectionProps;
+
+  /** @private */
   state = {
     values: {}
   };
@@ -29,6 +43,7 @@ export default class FormSection extends Component {
     onSubmit: () => undefined
   };
 
+  /** @private */
   makeChangeHandler(key) {
     return val => {
       const { values } = this.state;
@@ -37,6 +52,7 @@ export default class FormSection extends Component {
     };
   }
 
+  /** @private */
   submit() {
     const { validator } = this.props;
     const { values } = this.state;
@@ -52,6 +68,7 @@ export default class FormSection extends Component {
     this.props.onSubmit(values);
   }
 
+  /** @private */
   renderTextInput(input) {
     return (
       <CustomTextInput
@@ -62,6 +79,7 @@ export default class FormSection extends Component {
     );
   }
 
+  /** @private */
   renderPicker(input) {
     return (
       <CustomPicker
@@ -73,6 +91,7 @@ export default class FormSection extends Component {
     );
   }
 
+  /** @private */
   renderInput(input) {
     if (input.type === 'picker') {
       return this.renderPicker(input);
@@ -81,6 +100,7 @@ export default class FormSection extends Component {
     }
   }
 
+  /** @private */
   render() {
     const { inputs, style, submitLabel, loading } = this.props;
     return (

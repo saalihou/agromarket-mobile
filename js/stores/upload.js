@@ -5,7 +5,7 @@ import { RNS3 } from 'react-native-aws3';
 import Chance from 'chance';
 import Promise from 'bluebird';
 
-import api from '~config/api';
+import api from '../config/api';
 
 const uploadOptions = {
   keyPrefix: 'images/',
@@ -15,17 +15,37 @@ const uploadOptions = {
   secretKey: 'Hdv8VAFmNenIe2D+ONTmCeQabUmzdQKHO2g2GEsH'
 };
 
+/**
+ * Upload helpers and tracking
+ * 
+ * Manages selection and uploading of files from the user's device.
+ * Also keeps track of the progress of uploads and groups them
+ * under jobs
+ * 
+ * @class UploadStore
+ */
 class UploadStore {
-  @observable progresses = new Map();
-  @observable jobs = {};
+  @observable
+  /** A <String, Number> map that keeps track of different upload progresses */
+  progresses: Map = new Map();
 
-  async selectImagesAndUpload() {
+  @observable
+  /** An object having upload jobs under different keys, each job is a collection of uploads */
+  jobs: object = {};
+
+  /**
+   * Select images from the gallery and upload them
+   * @param {string} existingJobId - if this is part of an existing upload job, pass its id
+   * @returns {Promise} - resolved with an array, [jobId, uploadPromise]
+   * @memberof UploadStore
+   */
+  async selectImagesAndUpload(existingJobId: string): Promise {
     const chance = new Chance();
     const images = await ImagePicker.openPicker({
       multiple: true
     });
-    const jobId = chance.guid();
-    this.jobs[jobId] = [];
+    const jobId = existingJobId || chance.guid();
+    this.jobs[jobId] = this.jobs[jobId] || [];
     return [
       jobId,
       Promise.map(images, async image => {
@@ -43,7 +63,14 @@ class UploadStore {
     ];
   }
 
-  async upload({ path, name, type, uploadId }) {
+  /**
+   * Upload a file
+   * 
+   * @param {object} options { path, name, type, uploadId } 
+   * @returns {Promise} - resolved when the upload completes
+   * @memberof UploadStore
+   */
+  async upload({ path, name, type, uploadId }): Promise {
     const response = await RNS3.put(
       {
         uri: path,
@@ -59,4 +86,9 @@ class UploadStore {
   }
 }
 
+/**
+ * @ignore
+ */
 export default new UploadStore();
+
+export { UploadStore };

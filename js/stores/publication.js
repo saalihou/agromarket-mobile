@@ -2,21 +2,21 @@
 import { observable } from 'mobx';
 import { AsyncStorage } from 'react-native';
 
-import api from '~config/api';
+import api from '../config/api';
 
-type ProductType = {
+export type ProductType = {
   id: string,
   label: string,
   unit: string,
   field: string
 };
 
-type PublicationZone = {
+export type PublicationZone = {
   region: string,
   department: string
 };
 
-type Publication = {
+export type Publication = {
   id: string,
   label: string,
   stock: number,
@@ -29,17 +29,51 @@ type Publication = {
 
 const GET_PUBLICATIONS_LIMIT = 20;
 
+/**
+ * A store for managing publications
+ * 
+ * Responsible for fetching, creating and removing publications
+ * 
+ * @class PublicationStore
+ */
 class PublicationStore {
-  @observable productTypes: Array<ProductType> = [];
-  @observable publishing: boolean;
-  @observable fetching: boolean;
-  @observable publications: Array<Publication> = [];
-  @observable myPublications: Array<Publication> = [];
+  @observable
+  /** The product types from the API */
+  productTypes: Array<ProductType> = [];
 
+  @observable
+  /** Whether the user is currently publishing or not */
+  publishing: boolean;
+
+  @observable
+  /** Whether we are currently fetching publications or not, use it to display a spinner */
+  fetching: boolean;
+
+  @observable
+  /** The current list of publications fetched from the API */
+  publications: Array<Publication> = [];
+
+  @observable
+  /** The current list of the logged in user's publications */
+  myPublications: Array<Publication> = [];
+  
+  @observable
+  /** The publication id being currently removed */
+  removingItem: string = null;
+
+  /** @private */
   _currentPublicationIndex = 0;
+  /** @private */
   _lastPublicationReached = false;
 
-  async refreshProductTypes() {
+  
+  /**
+   * Fetch product types and update the store
+   * 
+   * @returns {Promise<undefined>} 
+   * @memberof PublicationStore
+   */
+  async refreshProductTypes(): Promise<undefined> {
     const response = await api.get('/ProductTypes');
     if (!response.ok) {
       throw response.data.error || response.data;
@@ -47,7 +81,14 @@ class PublicationStore {
     this.productTypes = response.data;
   }
 
-  async publish(publication: Publication): Publication {
+  /**
+   * Create a publication
+   * 
+   * @param {Publication} publication - the publication to publish
+   * @returns {Promise<Publication>} - resolved with the published publication
+   * @memberof PublicationStore
+   */
+  async publish(publication: Publication): Promise<Publication> {
     this.publishing = true;
     const response = await api.post('/Publications', publication);
     if (!response.ok) {
@@ -61,7 +102,37 @@ class PublicationStore {
     return newPublication;
   }
 
-  async getNextPublications() {
+  /**
+   * Remove a publication 
+   * 
+   * @param {string} publicationId - the id of the publication to remove
+   * @returns {Promise<undefined>} 
+   * @memberof PublicationStore
+   */
+  async remove(publicationId: string): Promise<undefined> {
+    this.removingItem = publicationId;
+    const response = await api.delete(`/Publications/${publicationId}`);
+    if (!response.ok) {
+      this.removingItem = null;
+      throw response.data.error || response.data;
+    }
+    this.removingItem = null;
+    this.publications = this.publications.filter(p => p.id !== publicationId);
+    this.myPublications = this.myPublications.filter(
+      p => p.id !== publicationId
+    );
+  }
+
+  /**
+   * Get the next page in the publications
+   * 
+   * Publications are paginated, this fetches the next page and appends it
+   * to the current list of publications
+   * 
+   * @returns {Promise<undefined>} 
+   * @memberof PublicationStore
+   */
+  async getNextPublications(): Promise<undefined> {
     if (this.fetching || this._lastPublicationReached) {
       return;
     }
@@ -84,8 +155,14 @@ class PublicationStore {
       this._lastPublicationReached = true;
     }
   }
-
-  async getMyPublications() {
+  
+  /**
+   * Fetch the logged in user's publications and update the store
+   * 
+   * @returns {Promise<undefined>} 
+   * @memberof PublicationStore
+   */
+  async getMyPublications(): Promise<undefined> {
     try {
       this.loading = true;
       const userId = await AsyncStorage.getItem('currentUserId');
@@ -109,10 +186,20 @@ class PublicationStore {
       this.loading = false;
     }
   }
-
-  clearMyPublications() {
+  
+  /**
+   * Clear the logged in user's publications
+   * 
+   * @memberof PublicationStore
+   */
+  clearMyPublications(): undefined {
     this.myPublications = [];
   }
 }
 
+/**
+ * @ignore
+ */
 export default new PublicationStore();
+
+export { PublicationStore };

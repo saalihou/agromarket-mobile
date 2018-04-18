@@ -18,15 +18,15 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { observer } from 'mobx-react';
 import chunk from 'lodash/chunk';
 
-import screen from '~hoc/screen';
-import colors from '~theme/colors';
+import screen from '../../hoc/screen';
+import colors from '../../theme/colors';
 
-import Card from '~components/Card';
-import FormSection from '~components/FormSection';
+import Card from '../../components/Card';
+import FormSection from '../../components/FormSection';
 
-import publicationStore from '~stores/publication';
-import uploadStore from '~stores/upload';
-import authStore from '~stores/auth';
+import publicationStore from '../../stores/publication';
+import uploadStore from '../../stores/upload';
+import authStore from '../../stores/auth';
 
 import genInfosValidator from './validators/genInfos';
 import typePriceValidator from './validators/typePrice';
@@ -35,7 +35,9 @@ import addressValidator from './validators/address';
 @observer
 class ProductFormScreen extends Component {
   state = {
-    product: {}
+    product: {
+      pictures: []
+    }
   };
 
   componentDidMount() {
@@ -72,11 +74,21 @@ class ProductFormScreen extends Component {
 
   async addImages() {
     try {
-      const [jobId, uploadPromise] = await uploadStore.selectImagesAndUpload();
-      this.setState({ uploadJobId: jobId, uploading: true });
+      const { uploadJobId } = this.state;
+      const [jobId, uploadPromise] = await uploadStore.selectImagesAndUpload(
+        uploadJobId
+      );
+      this.setState({ uploadJobId: jobId, uploading: true }, () => {
+        setTimeout(() => {
+          this.refs.previewsContainer.scrollToEnd({ animated: true });
+        });
+      });
       const pictures = await uploadPromise;
       this.setState({
-        product: { ...this.state.product, pictures },
+        product: {
+          ...this.state.product,
+          pictures: [...this.state.product.pictures, ...pictures]
+        },
         uploading: false
       });
     } catch (e) {
@@ -87,6 +99,7 @@ class ProductFormScreen extends Component {
         `Erreur`,
         `Une erreur est survenue lors de la sélection d'images. ${e.message}`
       );
+      console.error(e);
     }
   }
 
@@ -155,7 +168,8 @@ class ProductFormScreen extends Component {
                     multiline: true,
                     numberOfLines: 5,
                     placeholder: 'Description',
-                    icon: 'description'
+                    icon: 'description',
+                    autoCapitalize: 'sentences'
                   }
                 ]}
                 validator={genInfosValidator}
@@ -211,37 +225,31 @@ class ProductFormScreen extends Component {
               />
             </View>
             <View style={styles.addImagesSection}>
-              {!this.state.uploadJobId ? (
-                <TouchableOpacity onPress={this.addImages.bind(this)}>
-                  <Text style={styles.addImagesText}>
-                    <MaterialIcon name="add" size={20} color="white" />Ajouter
-                    des images de votre produit
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <ScrollView style={styles.previewsContainer}>
-                  {chunk(
-                    uploadStore.jobs[this.state.uploadJobId],
-                    3
-                  ).map((chunk, i) => (
-                    <View style={styles.previewRow} key={i}>
-                      {chunk.map(upload => (
-                        <View key={upload.uploadId}>
-                          <Image
-                            source={{ uri: upload.path }}
-                            style={styles.preview}
-                          />
-                          <Text>{uploadStore.progresses[upload.uploadId]}</Text>
-                          <ProgressBarAndroid
-                            color={colors.PRIMARY}
-                            indeterminate={false}
-                            progress={uploadStore.progresses.get(
-                              upload.uploadId
-                            )}
-                            styleAttr="Horizontal"
-                          />
-                        </View>
-                      ))}
+              <TouchableOpacity onPress={this.addImages.bind(this)}>
+                <Text style={styles.addImagesText}>
+                  <MaterialIcon name="add" size={20} color="white" />Ajouter des
+                  images de votre produit
+                </Text>
+              </TouchableOpacity>
+              {this.state.uploadJobId && (
+                <ScrollView
+                  ref="previewsContainer"
+                  style={styles.previewsContainer}
+                  horizontal={true}
+                >
+                  {uploadStore.jobs[this.state.uploadJobId].map(upload => (
+                    <View style={styles.previewContainer} key={upload.uploadId}>
+                      <Image
+                        source={{ uri: upload.path }}
+                        style={styles.preview}
+                      />
+                      <Text>{uploadStore.progresses[upload.uploadId]}</Text>
+                      <ProgressBarAndroid
+                        color={colors.PRIMARY}
+                        indeterminate={false}
+                        progress={uploadStore.progresses.get(upload.uploadId)}
+                        styleAttr="Horizontal"
+                      />
                     </View>
                   ))}
                 </ScrollView>
@@ -289,14 +297,14 @@ const styles = StyleSheet.create({
   previewsContainer: {
     flex: 1
   },
-  previewRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+  previewContainer: {
+    marginRight: 15
   },
   preview: {
-    width: 90,
-    height: 90,
-    borderRadius: 3
+    width: 100,
+    flex: 1,
+    borderRadius: 3,
+    borderRadius: 10
   }
 });
 

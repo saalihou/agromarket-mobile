@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import color from '~theme/colors.json'
+import color from '../../theme/colors.json'
 
-import screen from '~hoc/screen';
+import screen from '../../hoc/screen';
 
 class Welcome extends Component {
     async componentWillMount() {

@@ -6,9 +6,9 @@ import ParallaxScrollView from 'react-native-parallax-scrollview';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 
-import colors from '~theme/colors';
+import colors from '../../theme/colors';
 
-import screen from '~hoc/screen';
+import screen from '../../hoc/screen';
 
 class ProductDetailScreen extends Component {
   componentWillMount() {}

@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, Image, Button, StyleSheet, Alert } from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Image,
+  Button,
+  StyleSheet,
+  Alert
+} from 'react-native';
 import { observer } from 'mobx-react';
 
-import Card from '~components/Card';
-import FormSection from '~components/FormSection';
+import Card from '../../components/Card';
+import FormSection from '../../components/FormSection';
 
-import screen from '~hoc/screen';
-import colors from '~theme/colors';
+import screen from '../../hoc/screen';
+import colors from '../../theme/colors';
 
-import authValidator from '~screens/Subscribe/validations/auth';
+import authValidator from '../Subscribe/validations/auth';
 
-import authStore from '~stores/auth';
+import authStore from '../../stores/auth';
 
 @observer
 class LoginScreen extends Component {
@@ -50,7 +58,7 @@ class LoginScreen extends Component {
         source={require('~assets/images/fruits.png')}
         style={styles.backgroundImage}
       >
-        <Card title="Connexion">
+        <Card>
           <FormSection
             style={{ flex: 0 }}
             inputs={[

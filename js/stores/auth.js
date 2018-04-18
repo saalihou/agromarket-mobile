@@ -3,20 +3,70 @@ import { observable } from 'mobx';
 import assign from 'lodash/assign';
 import { AsyncStorage } from 'react-native';
 
-import api from '~config/api';
+import api from '../config/api';
 
-type AuthParams = {
+export type AuthParams = {
   phoneNumber: string,
   password: string
 };
 
-class AuthStore {
-  @observable pendingUser = null;
-  @observable loading = false;
-  @observable token = null;
-  @observable currentUser = null;
+export type User = {
+  id: string,
+  phoneNumber: string,
+  profile: UserProfile
+};
 
-  async subscribe({ phoneNumber, password }: AuthParams) {
+export type UserProfile = {
+  firstName: string,
+  lastName: string,
+  phoneNumbers: Array<string>,
+  address: UserAddress
+};
+
+export type UserAddress = {
+  region: string,
+  department: string,
+  district: string,
+  details: string
+};
+
+export type Token = {
+  id: string,
+  ttl: number,
+  created: Date,
+  userId: string
+};
+
+/**
+ * Store for managing authentication, authorization and sessions
+ * 
+ * @class AuthStore
+ */
+class AuthStore {
+  @observable
+  /** The user being currently subscribed */
+  pendingUser: User = null;
+
+  @observable
+  /** Whether the store is busy or not */
+  loading: boolean = false;
+
+  @observable
+  /** The authentication token currently used */
+  token: Token = null;
+
+  @observable
+  /** The current logged in user */
+  currentUser: User = null;
+
+  /**
+   * Subscribe a user
+   * 
+   * @param {AuthParams} params - the authentication parameters
+   * @returns {Promise<User>} - resolved with a user in pending state
+   * @memberof AuthStore
+   */
+  async subscribe({ phoneNumber, password }: AuthParams): Promise<User> {
     try {
       this.loading = true;
       const response = await api.post('/AGMUsers', {
@@ -44,7 +94,14 @@ class AuthStore {
     }
   }
 
-  async login({ phoneNumber, password }: AuthParams) {
+  /**
+   * Log a user in
+   * 
+   * @param {AuthParams} params - the authentication parameters
+   * @returns {Promise<User>} 
+   * @memberof AuthStore
+   */
+  async login({ phoneNumber, password }: AuthParams): Promise<User> {
     this.loading = true;
     try {
       const loginResponse = await api.post('/AGMUsers/loginWithPhone', {
@@ -62,10 +119,7 @@ class AuthStore {
       }
       const user = userResponse.data;
       await AsyncStorage.multiSet([
-        [
-          'session',
-          JSON.stringify({ currentUser: user, token: this.token })
-        ],
+        ['session', JSON.stringify({ currentUser: user, token: this.token })],
         ['currentUserId', user.id]
       ]);
       this.currentUser = user;
@@ -77,7 +131,13 @@ class AuthStore {
     }
   }
 
-  async logout() {
+  /**
+   * Log the current user out
+   * 
+   * @returns {Promise<boolean>} 
+   * @memberof AuthStore
+   */
+  async logout(): Promise<boolean> {
     try {
       this.loading = true;
       this.currentUser = null;
@@ -95,7 +155,15 @@ class AuthStore {
     }
   }
 
-  async restoreSession() {
+  /**
+   * Restore the current user's session
+   * 
+   * Call this when the app launches
+   * 
+   * @returns {Promise<undefined>} 
+   * @memberof AuthStore
+   */
+  async restoreSession(): Promise<undefined> {
     try {
       const session = await AsyncStorage.getItem('session');
       if (!session) {
@@ -111,7 +179,14 @@ class AuthStore {
     }
   }
 
-  async verifyPhone(code: string): { verified: boolean } {
+  /**
+   * Verify a pending user's phone when subscribing
+   * 
+   * @param {string} code - the code to verify
+   * @returns {Promise<{ verified: boolean }>} - resolved with whether verification is good or not 
+   * @memberof AuthStore
+   */
+  async verifyPhone(code: string): Promise<{ verified: boolean }> {
     try {
       const response = await api.post('/AGMUsers/verifyPhone', {
         phoneNumber: this.pendingUser.phoneNumber,
@@ -128,7 +203,14 @@ class AuthStore {
     }
   }
 
-  async updatePendingProfile(profile) {
+  /**
+   * Update the pending user's profile with various keys
+   * 
+   * @param {object} profile 
+   * @returns {Promise<undefined>} 
+   * @memberof AuthStore
+   */
+  async updatePendingProfile(profile: object): Promise<undefined> {
     try {
       this.loading = true;
       const mergedProfile = {};
@@ -149,4 +231,9 @@ class AuthStore {
   }
 }
 
+/**
+ * @ignore
+ */
 export default new AuthStore();
+
+export { AuthStore };

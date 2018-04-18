@@ -128,8 +128,8 @@ class ProductFormScreen extends Component {
           flex: 1,
           paddingLeft: 20,
           paddingRight: 20,
-          paddingTop: 50,
-          paddingBottom: 50
+          paddingTop: 20,
+          paddingBottom: 20
         }}
       >
         <Image
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     zIndex: 0
   },
   viewPager: {
-    flex: 0.8,
+    flex: 1,
     zIndex: 2
   },
   addImagesSection: {
